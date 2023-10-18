@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Handler
 import android.widget.ImageView
 import android.widget.TextView
-import com.reto1.mytubeapp.song.SongActivity
-import com.reto1.mytubeapp.user.RegisterActivity
+import com.reto1.mytubeapp.ui.song.SongActivity
+import com.reto1.mytubeapp.ui.user.RegisterActivity
 
 
 class MainActivity :  AppCompatActivity() {

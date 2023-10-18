@@ -1,4 +1,4 @@
-package com.reto1.mytubeapp.song
+package com.reto1.mytubeapp.ui.song
 
 import android.os.Bundle
 import android.widget.Button

@@ -1,4 +1,4 @@
-package com.reto1.mytubeapp.user
+package com.reto1.mytubeapp.ui.user
 
 import android.content.Intent
 import android.os.Bundle
