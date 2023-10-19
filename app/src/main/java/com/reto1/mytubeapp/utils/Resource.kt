@@ -1,4 +1,4 @@
-package com.example.demoemployees.utils
+package com.reto1.mytubeapp.utils
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     enum class Status {
