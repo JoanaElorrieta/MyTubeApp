@@ -1,6 +1,7 @@
 package com.reto1.mytubeapp.data.repository.remote
 
 import com.reto1.mytubeapp.data.Song
+import com.reto1.mytubeapp.data.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -20,4 +21,11 @@ interface APIInterface {
     suspend fun deleteSong(@Path("id") id: Int): Response<Integer>
     @GET("/songs/{id}")
     suspend fun getSongById(@Path("id") id: Int): Response<Song>
+
+    @GET("/users/{email}")
+    suspend fun getUserByMail(@Path("email") email:String): Response<User>
+    @POST("/users")
+    suspend fun createUser(@Body user: User): Response<Integer>
+    @PUT("/users/{email}")
+    suspend fun updateUser(@Path("email") email: String, @Body user: User): Response<Integer>
 }
