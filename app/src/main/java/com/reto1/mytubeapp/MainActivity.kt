@@ -1,6 +1,5 @@
 package com.reto1.mytubeapp
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
@@ -10,11 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Handler
 import android.widget.ImageView
 import android.widget.TextView
-import com.reto1.mytubeapp.ui.user.RegisterActivity
 import com.reto1.mytubeapp.ui.song.SongActivity
+import com.reto1.mytubeapp.ui.user.RegisterActivity
 
-
-class MainActivity :  AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#B71C1C"
-    android:visibility="visible">
+    tools:context=".user.RegisterActivity">
 
     <EditText
         android:id="@+id/user"
@@ -91,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password2" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewIcon"
         android:layout_width="207dp"
         android:layout_height="178dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineSuperior"

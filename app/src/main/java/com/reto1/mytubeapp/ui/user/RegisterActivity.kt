@@ -5,10 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.ui.song.SongActivity
 
-class RegisterActivity : ComponentActivity() {
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_activity)
