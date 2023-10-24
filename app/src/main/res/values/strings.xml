@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyTubeApp</string>
     <string name="user">Usuario</string>
+    <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="login">Login</string>
     <string name="rememberMe">Recuérdame</string>

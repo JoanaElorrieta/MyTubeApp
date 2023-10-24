@@ -7,7 +7,21 @@ import kotlinx.parcelize.Parcelize
 data class User (
     val id: Int,
     val name: String,
-    val last_name: String,
+    val lastName: String,
     val email: String,
     val password: String,
-): Parcelable
+): Parcelable {
+    constructor(
+        name: String,
+        lastName: String,
+        email: String,
+        password: String
+    ) : this(
+        id = 0, // valor por defecto
+        name = name,
+        lastName = lastName,
+        email = email,
+        password = password
+    )
+
+}
