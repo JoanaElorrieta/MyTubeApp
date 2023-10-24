@@ -16,37 +16,32 @@ import kotlinx.coroutines.withContext
 class SongViewModel(
     private val songRepository: CommonSongRepository
 ) : ViewModel() {
-
-
+    
     private val _items = MutableLiveData<Resource<List<Song>>>()
     val items : LiveData<Resource<List<Song>>> get() = _items
 
-    private val _created = MutableLiveData<Resource<Integer>>();
-    val created : LiveData<Resource<Integer>> get() = _created;
+    private val _created = MutableLiveData<Resource<Void>>()
+    val created : LiveData<Resource<Void>> get() = _created
 
-    private val _updated = MutableLiveData<Resource<Integer>>();
-    val updated : LiveData<Resource<Integer>> get() = _updated;
+    private val _updated = MutableLiveData<Resource<Void>>()
+    val updated : LiveData<Resource<Void>> get() = _updated
 
-    private val _deleted = MutableLiveData<Resource<Integer>>();
-    val deleted : LiveData<Resource<Integer>> get() = _deleted;
-
-
-    init {
-   updateSongList();
-    }
+    private val _deleted = MutableLiveData<Resource<Integer>>()
+    val deleted : LiveData<Resource<Integer>> get() = _deleted
+    init { updateSongList() }
     fun updateSongList() {
         viewModelScope.launch {
-            val repoResponse = getSongsFromRepository();
+            val repoResponse = getSongsFromRepository()
             _items.value = repoResponse
         }
     }
-    suspend fun getSongsFromRepository() : Resource<List<Song>> {
+    private suspend fun getSongsFromRepository() : Resource<List<Song>> {
         return withContext(Dispatchers.IO) {
             songRepository.getSongs()
         }
     }
-    fun onAddSong(id: Int, title: String, author: String, url:String) {
-        val song = Song(id,title, author, url)
+    fun onAddSong(title: String, author: String, url:String) {
+        val song = Song(title, author, url)
         viewModelScope.launch {
             _created.value = createSong(song)
         }
@@ -57,22 +52,22 @@ class SongViewModel(
             _updated.value = updateSong(id,song)
         }
     }
-    fun onDeleteSong(id: Int, name: String, city: String) {
+    fun onDeleteSong(id: Int) {
         viewModelScope.launch {
             _deleted.value = deleteSong(id)
         }
     }
-    suspend fun createSong(song: Song): Resource<Integer> {
+    private suspend fun createSong(song: Song): Resource<Void> {
         return withContext(Dispatchers.IO) {
             songRepository.createSong(song)
         }
     }
-    suspend fun updateSong(id:Int, song: Song): Resource<Integer> {
+    private suspend fun updateSong(id:Int, song: Song): Resource<Void> {
         return withContext(Dispatchers.IO) {
             songRepository.updateSong(id,song)
         }
     }
-    suspend fun deleteSong(id:Int): Resource<Integer> {
+    private suspend fun deleteSong(id:Int): Resource<Integer> {
         return withContext(Dispatchers.IO) {
             songRepository.deleteSong(id)
         }

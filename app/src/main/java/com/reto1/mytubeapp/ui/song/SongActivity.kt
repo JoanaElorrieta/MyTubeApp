@@ -1,21 +1,25 @@
 package com.reto1.mytubeapp.ui.song
+
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
+import com.reto1.mytubeapp.R
+import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
 import com.reto1.mytubeapp.utils.Resource
 import com.reto1.mytubeapp.databinding.SongActivityBinding
 
-class SongActivity : ComponentActivity(){
+class SongActivity : AppCompatActivity(){
 
 private lateinit var songAdapter: SongAdapter
 private val songRepository = RemoteSongDataSource()
 
 private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
 
+    private lateinit var song : Song
+    private var isFragmentVisible = false
 override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -23,11 +27,21 @@ override fun onCreate(savedInstanceState: Bundle?) {
     val binding = SongActivityBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    songAdapter = SongAdapter()
+    fun onEmployeesListClickItem(song: Song) {
+
+        this.song = song
+
+        binding.songInputTitle.setText(song.title)
+        binding.songInputAuthor.setText(song.author)
+        binding.songInputUrl.setText(song.url)
+
+    }
+
+    songAdapter = SongAdapter(::onEmployeesListClickItem)
 
     binding.songsList.adapter = songAdapter
 
-    viewModel.items.observe(this, Observer {
+    viewModel.items.observe(this) {
         Log.i("PruebasDia1", "ha ocurrido un cambio en la lista")
         when (it.status) {
             Resource.Status.SUCCESS -> {
@@ -45,9 +59,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
                 // de momento
             }
         }
-    })
+    }
 
-    viewModel.created.observe(this, Observer {
+    viewModel.created.observe(this) {
         when (it.status) {
             Resource.Status.SUCCESS -> {
                 viewModel.updateSongList()
@@ -61,9 +75,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
                 // de momento
             }
         }
-    })
+    }
 
-    viewModel.updated.observe(this, Observer {
+    viewModel.updated.observe(this) {
         when (it.status) {
             Resource.Status.SUCCESS -> {
                 viewModel.updateSongList()
@@ -77,8 +91,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
                 // de momento
             }
         }
-    })
-    viewModel.deleted.observe(this, Observer {
+    }
+    viewModel.deleted.observe(this) {
         when (it.status) {
             Resource.Status.SUCCESS -> {
                 viewModel.updateSongList()
@@ -92,37 +106,58 @@ override fun onCreate(savedInstanceState: Bundle?) {
                 // de momento
             }
         }
-    })
+    }
 
-//    binding.addSong.setOnClickListener() {
-//        viewModel.onAddSong(
-//            binding.departmentInputName.text.toString(),
-//            binding.departmentInputCity.text.toString()
-//        )
-//        binding.departmentInputId.text.clear()
-//        binding.departmentInputName.text.clear()
-//        binding.departmentInputCity.text.clear()
-//    }
-//    binding.updateDepartment.setOnClickListener() {
-//        viewModel.onUpdateSong(
-//            binding.departmentInputId.text.toString().toInt(),
-//            binding.departmentInputName.text.toString(),
-//            binding.departmentInputCity.text.toString()
-//        )
-//        binding.departmentInputId.text.clear()
-//        binding.departmentInputName.text.clear()
-//        binding.departmentInputCity.text.clear()
-//    }
-//    binding.deleteSong.setOnClickListener() {
-//        viewModel.onDeleteSong(
-//            binding.departmentInputId.text.toString().toInt(),
-//            binding.departmentInputName.text.toString(),
-//            binding.departmentInputCity.text.toString()
-//        )
-//        binding.departmentInputId.text.clear()
-//        binding.departmentInputName.text.clear()
-//        binding.departmentInputCity.text.clear()
-//    }
+    binding.filter.setOnClickListener {
+        if (isFragmentVisible) {
+            // Si el Fragment ya está visible, quitarlo
+            val transaction = supportFragmentManager.beginTransaction()
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragment_song)
+            if (fragment != null) {
+                transaction.remove(fragment)
+                transaction.commit()
+            }
+            isFragmentVisible = false
+        } else {
+            // Si el Fragment no está visible, mostrarlo
+            val transaction = supportFragmentManager.beginTransaction()
+            val fragment = SongFragment()
+            transaction.replace(R.id.fragment_song, fragment)
+            transaction.commit()
+            isFragmentVisible = true
+        }
+    }
+
+    binding.addSong.setOnClickListener {
+        viewModel.onAddSong(
+            binding.songInputTitle.text.toString(),
+            binding.songInputAuthor.text.toString(),
+            binding.songInputUrl.text.toString()
+        )
+        binding.songInputTitle.text.clear()
+        binding.songInputAuthor.text.clear()
+        binding.songInputUrl.text.clear()
+    }
+
+    binding.updateSong.setOnClickListener {
+        viewModel.onUpdateSong(
+            song.id,
+            binding.songInputTitle.text.toString(),
+            binding.songInputAuthor.text.toString(),
+            binding.songInputUrl.text.toString()
+        )
+        binding.songInputTitle.text.clear()
+        binding.songInputAuthor.text.clear()
+        binding.songInputUrl.text.clear()
+    }
+    binding.deleteSong.setOnClickListener {
+        viewModel.onDeleteSong(
+            song.id,
+        )
+        binding.songInputTitle.text.clear()
+        binding.songInputAuthor.text.clear()
+        binding.songInputUrl.text.clear()
+    }
 
 
 

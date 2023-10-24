@@ -14,9 +14,9 @@ interface APIInterface {
     @GET("/songs")
     suspend fun getSongs(): Response<List<Song>>
     @POST("/songs")
-    suspend fun createSong(@Body song: Song): Response<Integer>
+    suspend fun createSong(@Body song: Song): Response<Void>
     @PUT("/songs/{id}")
-    suspend fun updateSong(@Path("id") id: Int, @Body song: Song): Response<Integer>
+    suspend fun updateSong(@Path("id") id: Int, @Body song: Song): Response<Void>
     @DELETE("/songs/{id}")
     suspend fun deleteSong(@Path("id") id: Int): Response<Integer>
     @GET("/songs/{id}")

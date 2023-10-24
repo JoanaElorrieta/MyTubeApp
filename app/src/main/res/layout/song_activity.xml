@@ -33,6 +33,7 @@
         android:inputType="text"
         android:maxLines="1"
         tools:ignore="TouchTargetSizeCheck" />
+
     <EditText
         android:id="@+id/song_input_url"
         android:layout_width="match_parent"
@@ -52,35 +53,54 @@
 
         <Button
             android:id="@+id/add_song"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/add_song"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/add_song" />
 
         <Button
             android:id="@+id/update_song"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/update_song"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/update_song" />
 
         <Button
             android:id="@+id/delete_song"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/delete_song"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/delete_song" />
+
+        <Button
+            android:id="@+id/filter"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/filter" />
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/songs_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_weight="1" />
+        android:layout_height="206dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/songs_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_song"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/buttonE"
