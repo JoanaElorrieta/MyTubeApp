@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.logoInicio).visibility = View.INVISIBLE
         findViewById<ImageView>(R.id.logoText).visibility = View.VISIBLE
         findViewById<TextView>(R.id.password).visibility = View.VISIBLE
-        findViewById<TextView>(R.id.user).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.email).visibility = View.VISIBLE
         findViewById<Button>(R.id.login).visibility = View.VISIBLE
         findViewById<Button>(R.id.rememberMe).visibility = View.VISIBLE
         findViewById<Button>(R.id.register).visibility = View.VISIBLE
