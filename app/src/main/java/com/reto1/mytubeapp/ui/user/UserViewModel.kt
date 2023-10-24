@@ -1,5 +1,6 @@
 package com.reto1.mytubeapp.ui.user
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,10 +18,10 @@ class UserViewModel(
     private val userRepository: CommonUserRepository
 ) : ViewModel() {
 
-    private val _created = MutableLiveData<Resource<Integer>>()
-    val created : LiveData<Resource<Integer>> get() = _created
+    private val _created = MutableLiveData<Resource<Void>>()
+    val created : LiveData<Resource<Void>> get() = _created
 
-    suspend fun createUser(user : User) : Resource<Integer> {
+    suspend fun createUser(user : User) : Resource<Void> {
         return withContext(Dispatchers.IO) {
             userRepository.createUser(user)
         }

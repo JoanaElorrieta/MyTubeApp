@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.reto1.mytubeapp.MainActivity
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
@@ -22,6 +23,7 @@ import java.util.regex.Pattern
 class RegisterActivity : AppCompatActivity() {
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
+    private lateinit var user:User
 
     private val viewModel: UserViewModel by viewModels { UserViewModelFactory(userRepository) }
 
@@ -35,15 +37,19 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.created.observe(this, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    //    viewModel.createUser()
+                    val resultIntent = Intent()
+                    resultIntent.putExtra("user", user)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Ya existe un usuario con este correo", Toast.LENGTH_LONG)
+                        .show()
                 }
 
                 Resource.Status.LOADING -> {
-                    // de momento
+
                 }
             }
         })
@@ -52,48 +58,47 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
         findViewById<Button>(R.id.register).setOnClickListener {
-            var user=checkData()
-            if (user!=null){
-               viewModel.onCreateUser(user)
-                val intent = Intent(this, SongActivity::class.java)
-                startActivity(intent)
-            }else{
-
+            var userNuevo = checkData()
+            if (userNuevo != null) {
+                user=userNuevo
+                viewModel.onCreateUser(userNuevo)
             }
+        }
+
+
     }
 
+    //Este metodo valida el patrón de los correos
+    private fun validarEmail(email: String): Boolean {
+        val pattern: Pattern = Patterns.EMAIL_ADDRESS
 
-}
-//Este metodo valida el patrón de los correos
-private fun validarEmail(email: String): Boolean {
-    val pattern: Pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
+    }
 
-    return pattern.matcher(email).matches()
-}
-
-//Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
+    //Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
 //Formato correcto lo pasa, si no lo pasa como null
-fun checkData(): User? {
-    val email = findViewById<EditText>(R.id.email).text.toString()
-    val name = findViewById<EditText>(R.id.name).text.toString()
-    val surname = findViewById<EditText>(R.id.surname).text.toString()
-    val password = findViewById<EditText>(R.id.password).text.toString()
-    val password2 = findViewById<EditText>(R.id.password2).text.toString()
+    fun checkData(): User? {
+        val email = findViewById<EditText>(R.id.email).text.toString()
+        val name = findViewById<EditText>(R.id.name).text.toString()
+        val surname = findViewById<EditText>(R.id.surname).text.toString()
+        val password = findViewById<EditText>(R.id.password).text.toString()
+        val password2 = findViewById<EditText>(R.id.password2).text.toString()
 
-    if (email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || password2.isEmpty()){
-        Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
-        return null
-    }
-    val emailCorrecto=validarEmail(email)
-    if (!emailCorrecto){
-        Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
-    }
+        if (email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || password2.isEmpty()) {
+            Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
+            return null
+        }
+        val emailCorrecto = validarEmail(email)
+        if (!emailCorrecto) {
+            Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
+            return null
+        }
 
-    if (password == password2 && emailCorrecto) {
-        return User(name, surname, email, password)
-    } else {
-        Toast.makeText(this, "Las dos contraseñas no coinciden", Toast.LENGTH_LONG).show()
-        return null
+        if (password == password2) {
+            return User(name, surname, email, password)
+        } else {
+            Toast.makeText(this, "Las dos contraseñas no coinciden", Toast.LENGTH_LONG).show()
+            return null
+        }
     }
-}
 }
