@@ -23,7 +23,7 @@ import java.util.regex.Pattern
 class RegisterActivity : AppCompatActivity() {
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
-    private lateinit var user:User
+    private lateinit var user: User
 
     private val viewModel: UserViewModel by viewModels { UserViewModelFactory(userRepository) }
 
@@ -60,7 +60,7 @@ class RegisterActivity : AppCompatActivity() {
         findViewById<Button>(R.id.register).setOnClickListener {
             var userNuevo = checkData()
             if (userNuevo != null) {
-                user=userNuevo
+                user = userNuevo
                 viewModel.onCreateUser(userNuevo)
             }
         }
@@ -95,7 +95,16 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         if (password == password2) {
-            return User(name, surname, email, password)
+            if (password.length >= 8) {
+                return User(name, surname, email, password)
+            } else {
+                Toast.makeText(
+                    this,
+                    "La contraseña debe tener 8 caracteres o más",
+                    Toast.LENGTH_LONG
+                ).show()
+                return null
+            }
         } else {
             Toast.makeText(this, "Las dos contraseñas no coinciden", Toast.LENGTH_LONG).show()
             return null
