@@ -9,6 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface APIInterface {
     @GET("/songs")
@@ -22,8 +23,8 @@ interface APIInterface {
     @GET("/songs/{id}")
     suspend fun getSongById(@Path("id") id: Int): Response<Song>
 
-    @GET("/users/{email}")
-    suspend fun getUserByMail(@Path("email") email:String): Response<User>
+    @GET("/users/{email},{password}")
+    suspend fun getUserByMail(@Path("email") email: String, @Path("password") password: String): Response<User>
     @POST("/users")
     suspend fun createUser(@Body user: User): Response<Void>
     @PUT("/users/{email}")

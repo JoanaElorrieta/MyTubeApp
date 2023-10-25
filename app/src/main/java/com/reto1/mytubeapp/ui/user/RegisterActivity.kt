@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.reto1.mytubeapp.MainActivity
 import com.reto1.mytubeapp.R
+import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.ui.song.SongActivity
@@ -78,6 +79,7 @@ class RegisterActivity : AppCompatActivity() {
     //Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
 //Formato correcto lo pasa, si no lo pasa como null
     fun checkData(): User? {
+        val listSongsFav: List<Song> = emptyList()
         val email = findViewById<EditText>(R.id.email).text.toString()
         val name = findViewById<EditText>(R.id.name).text.toString()
         val surname = findViewById<EditText>(R.id.surname).text.toString()
@@ -96,7 +98,7 @@ class RegisterActivity : AppCompatActivity() {
 
         if (password == password2) {
             if (password.length >= 8) {
-                return User(name, surname, email, password)
+                return User(name, surname, email, password, listSongsFav)
             } else {
                 Toast.makeText(
                     this,
