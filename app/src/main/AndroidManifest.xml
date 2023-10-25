@@ -23,12 +23,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.user.RegisterActivity" android:exported="true" android:label="Registro">>
+        <activity android:name=".ui.user.RegisterActivity" android:exported="true" android:label="Registro">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
         </activity>
         <activity android:name=".ui.song.SongActivity" android:exported="true">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
     </activity>
+        <activity android:name=".ui.song.SongConfig" android:exported="true"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

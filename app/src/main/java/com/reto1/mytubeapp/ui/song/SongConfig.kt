@@ -6,15 +6,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
+import com.reto1.mytubeapp.databinding.ConfigSongBinding
 import com.reto1.mytubeapp.utils.Resource
-import com.reto1.mytubeapp.databinding.SongActivityBinding
 
-class SongActivity : AppCompatActivity() {
+class SongConfig : AppCompatActivity() {
 
-    private val SONG_CHANGES_CODE = 1
     private lateinit var songAdapter: SongAdapter
     private val songRepository = RemoteSongDataSource()
 
@@ -23,13 +23,18 @@ class SongActivity : AppCompatActivity() {
     private lateinit var song: Song
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val binding = SongActivityBinding.inflate(layoutInflater)
+        val binding = ConfigSongBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var someChanges = false
 
         fun onEmployeesListClickItem(song: Song) {
 
             this.song = song
+
+            binding.songInputTitle.setText(song.title)
+            binding.songInputAuthor.setText(song.author)
+            binding.songInputUrl.setText(song.url)
 
         }
 
@@ -37,18 +42,13 @@ class SongActivity : AppCompatActivity() {
 
         binding.songsList.adapter = songAdapter
 
-        val intent = intent
-        if (intent.hasExtra("someChanges")) {
-            val someChanges = intent.getBooleanExtra("someChanges", false)
-            // Hacer algo con la variable someChanges
-        }
-
         viewModel.items.observe(this) {
             Log.i("PruebasDia1", "ha ocurrido un cambio en la lista")
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     if (!it.data.isNullOrEmpty()) {
                         songAdapter.submitList(it.data)
+                        someChanges = true
                         Log.i("PruebasDia1", "ha entrado")
                     }
                 }
@@ -67,6 +67,7 @@ class SongActivity : AppCompatActivity() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     viewModel.updateSongList()
+                    someChanges = true
                 }
 
                 Resource.Status.ERROR -> {
@@ -83,6 +84,7 @@ class SongActivity : AppCompatActivity() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     viewModel.updateSongList()
+                    someChanges = true
                 }
 
                 Resource.Status.ERROR -> {
@@ -98,6 +100,7 @@ class SongActivity : AppCompatActivity() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     viewModel.updateSongList()
+                    someChanges = true
                 }
 
                 Resource.Status.ERROR -> {
@@ -109,47 +112,56 @@ class SongActivity : AppCompatActivity() {
                 }
             }
         }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        binding.imageViewConfigMenu.setOnClickListener {
-            val intent = Intent(this, SongConfig::class.java)
-            startActivityForResult(intent, SONG_CHANGES_CODE)
-        }
-    //        binding.imageViewConfigMenu.setOnClickListener {
-//        Log.d("Prueba", "Hola")
-//        if (isFragmentVisible) {
-//            // Si el Fragment ya está visible, quitarlo
-//            val transaction = supportFragmentManager.beginTransaction()
-//            val fragment = supportFragmentManager.findFragmentById(R.id.fragment_song)
-//            if (fragment != null) {
-//                transaction.remove(fragment)
-//                transaction.commit()
-//            }
-//            isFragmentVisible = false
-//        } else {
-//            // Si el Fragment no está visible, mostrarlo
-//            val transaction = supportFragmentManager.beginTransaction()
-//            val fragment = SongFragment()
-//            transaction.replace(R.id.fragment_song, fragment)
-//            transaction.commit()
-//            isFragmentVisible = true
-//        }
-//    }
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == SONG_CHANGES_CODE && resultCode == RESULT_OK) {
-
-            val someChanges = data?.getBooleanExtra("someChanges", false)
-
-            if (someChanges == true) {
-                viewModel.updateSongList()
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.page_1 -> {
+                    viewModel.onAddSong(
+                        binding.songInputTitle.text.toString(),
+                        binding.songInputAuthor.text.toString(),
+                        binding.songInputUrl.text.toString()
+                    )
+                    binding.songInputTitle.text.clear()
+                    binding.songInputAuthor.text.clear()
+                    binding.songInputUrl.text.clear()
+                    true
+                }
+                R.id.page_2 -> {
+                    viewModel.onDeleteSong(
+                        song.id,
+                    )
+                    binding.songInputTitle.text.clear()
+                    binding.songInputAuthor.text.clear()
+                    binding.songInputUrl.text.clear()
+                    true
+                }
+                R.id.page_3 -> {
+                    viewModel.onUpdateSong(
+                        song.id,
+                        binding.songInputTitle.text.toString(),
+                        binding.songInputAuthor.text.toString(),
+                        binding.songInputUrl.text.toString()
+                    )
+                    binding.songInputTitle.text.clear()
+                    binding.songInputAuthor.text.clear()
+                    binding.songInputUrl.text.clear()
+                    true
+                }
+                R.id.page_4 -> {
+                    val intent = Intent(this, SongActivity::class.java)
+                    intent.putExtra("someChanges", someChanges)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                    true
+                }
+                R.id.page_5 -> {
+                    // Maneja el evento del elemento con id "page_5"
+                    true
+                }
+                else -> false // Manejo predeterminado para otros elementos
             }
-
         }
 
     }
-
 }

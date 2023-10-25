@@ -1,8 +1,6 @@
 package com.reto1.mytubeapp.ui.song
 
-import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
