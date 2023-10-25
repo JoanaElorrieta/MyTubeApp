@@ -1,13 +1,16 @@
 package com.reto1.mytubeapp.data.repository.remote
 
+import android.util.Log
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.CommonUserRepository
+import com.reto1.mytubeapp.utils.Resource
 
 
 class RemoteUserDataSource: BaseDataSource(), CommonUserRepository {
-    override suspend fun getUserByMail(email: String) = getResult{
-        RetrofitClient.apiInterface.getUserByMail(email)
+    override suspend fun getUserByMail(email: String, password:String) = getResult{
+        RetrofitClient.apiInterface.getUserByMail(email,password)
     }
+
 
     override suspend fun createUser(user: User) = getResult {
         RetrofitClient.apiInterface.createUser(user)

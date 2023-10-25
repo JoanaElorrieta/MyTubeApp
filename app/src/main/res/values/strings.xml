@@ -15,7 +15,6 @@
     <string name="input_url">Url</string>
     <string name="back">Atrás</string>
     <string name="filter">Filtro</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="listado_de_canciones">Listado de canciones</string>
     <string name="panel_de_administraci_n">Panel de Administración</string>
@@ -24,4 +23,5 @@
     <string name="text_label_3">Editar</string>
     <string name="text_label_4">Volver</string>
     <string name="logOut">Log Out</string>
+    <string name="title_register">Nuevo usuario</string>
 </resources>

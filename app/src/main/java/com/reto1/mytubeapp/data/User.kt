@@ -4,24 +4,27 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class User (
+data class User(
     val id: Int,
     val name: String,
     val lastName: String,
     val email: String,
     val password: String,
+    val listSongFavs: List<Song>
 ): Parcelable {
     constructor(
         name: String,
         lastName: String,
         email: String,
-        password: String
-    ) : this(
+        password: String,
+        listSongFavs: List<Song>,
+
+        ) : this(
         id = 0, // valor por defecto
         name = name,
         lastName = lastName,
         email = email,
-        password = password
-    )
+        password = password,
+        listSongFavs = listSongFavs)
 
 }
