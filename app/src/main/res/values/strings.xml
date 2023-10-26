@@ -24,4 +24,9 @@
     <string name="text_label_4">Volver</string>
     <string name="logOut">Log Out</string>
     <string name="title_register">Nuevo usuario</string>
+    <string name="configuraci_n">Configuración</string>
+    <string name="icono">Icono</string>
+    <string name="menu_de_filtrado">menu de filtrado</string>
+    <string name="filtrar_por_t_tulo">Filtrar por Título</string>
+    <string name="filtro">filtro</string>
 </resources>

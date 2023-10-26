@@ -3,9 +3,14 @@ package com.reto1.mytubeapp.ui.song
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
@@ -17,10 +22,9 @@ class SongActivity : AppCompatActivity() {
     private val SONG_CHANGES_CODE = 1
     private lateinit var songAdapter: SongAdapter
     private val songRepository = RemoteSongDataSource()
-
     private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
-
     private lateinit var song: Song
+    private var isToolbarVisible = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,11 +41,9 @@ class SongActivity : AppCompatActivity() {
 
         binding.songsList.adapter = songAdapter
 
-        val intent = intent
-        if (intent.hasExtra("someChanges")) {
-            val someChanges = intent.getBooleanExtra("someChanges", false)
-            // Hacer algo con la variable someChanges
-        }
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = ""
 
         viewModel.items.observe(this) {
             Log.i("PruebasDia1", "ha ocurrido un cambio en la lista")
@@ -110,37 +112,49 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        binding.imageViewConfigMenu.setOnClickListener {
-            val intent = Intent(this, SongConfig::class.java)
-            startActivityForResult(intent, SONG_CHANGES_CODE)
-        }
-    //        binding.imageViewConfigMenu.setOnClickListener {
-//        Log.d("Prueba", "Hola")
-//        if (isFragmentVisible) {
-//            // Si el Fragment ya está visible, quitarlo
-//            val transaction = supportFragmentManager.beginTransaction()
-//            val fragment = supportFragmentManager.findFragmentById(R.id.fragment_song)
-//            if (fragment != null) {
-//                transaction.remove(fragment)
-//                transaction.commit()
-//            }
-//            isFragmentVisible = false
-//        } else {
-//            // Si el Fragment no está visible, mostrarlo
-//            val transaction = supportFragmentManager.beginTransaction()
-//            val fragment = SongFragment()
-//            transaction.replace(R.id.fragment_song, fragment)
-//            transaction.commit()
-//            isFragmentVisible = true
-//        }
-//    }
+        val bottomNavigationView =
+            findViewById<BottomNavigationView>(R.id.bottom_menu_song_activity)
 
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.back -> {
+                    finish()
+                    true
+                }
+
+                R.id.configMenu -> {
+
+                    val intent = Intent(this, SongConfig::class.java)
+                    startActivityForResult(intent, SONG_CHANGES_CODE)
+                    true
+                }
+
+                else -> false // Manejo predeterminado para otros elementos
+            }
+        }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_menu_filter, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+//            R.id. -> {
+//                // Manejar la selección del filtro de título
+//                true
+//            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == SONG_CHANGES_CODE && resultCode == RESULT_OK) {
+        if (requestCode == SONG_CHANGES_CODE && resultCode == RESULT_OK) {
 
             val someChanges = data?.getBooleanExtra("someChanges", false)
 

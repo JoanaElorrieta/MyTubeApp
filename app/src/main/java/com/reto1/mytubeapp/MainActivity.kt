@@ -107,7 +107,6 @@ class MainActivity : AppCompatActivity() {
         val email = findViewById<EditText>(R.id.email).text.toString()
         val password = findViewById<EditText>(R.id.password).text.toString()
 
-
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
             return false

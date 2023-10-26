@@ -3,6 +3,7 @@ package com.reto1.mytubeapp.ui.song
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,7 @@ class SongConfig : AppCompatActivity() {
 
     private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
 
-    private lateinit var song: Song
+    private var song = Song("", "", "")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ConfigSongBinding.inflate(layoutInflater)
@@ -112,53 +113,120 @@ class SongConfig : AppCompatActivity() {
                 }
             }
         }
+
+        binding.songInputUrl.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.songInputUrl.setText("https://")
+            }
+        }
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.page_1 -> {
-                    viewModel.onAddSong(
-                        binding.songInputTitle.text.toString(),
-                        binding.songInputAuthor.text.toString(),
-                        binding.songInputUrl.text.toString()
-                    )
-                    binding.songInputTitle.text.clear()
-                    binding.songInputAuthor.text.clear()
-                    binding.songInputUrl.text.clear()
-                    true
+                R.id.create -> {
+
+                    if (binding.songInputTitle.text.toString() != "" &&
+                        binding.songInputAuthor.text.toString() != "" &&
+                        binding.songInputUrl.text.toString().matches("^https://.*".toRegex())
+                    ) {
+
+                        viewModel.onAddSong(
+                            binding.songInputTitle.text.toString(),
+                            binding.songInputAuthor.text.toString(),
+                            binding.songInputUrl.text.toString()
+                        )
+                        binding.songInputTitle.text.clear()
+                        binding.songInputAuthor.text.clear()
+                        binding.songInputUrl.text.clear()
+                        true
+                    } else {
+
+                        Toast.makeText(
+                            this,
+                            "Debe cumplir con los requisitos de creación",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        false
+
+                    }
                 }
-                R.id.page_2 -> {
-                    viewModel.onDeleteSong(
-                        song.id,
-                    )
-                    binding.songInputTitle.text.clear()
-                    binding.songInputAuthor.text.clear()
-                    binding.songInputUrl.text.clear()
-                    true
+
+                R.id.delete -> {
+                    if (song.id != 0) {
+                        viewModel.onDeleteSong(song.id)
+                        binding.songInputTitle.text.clear()
+                        binding.songInputAuthor.text.clear()
+                        binding.songInputUrl.text.clear()
+                        true
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Debe seleccionar una cancion a eliminar",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        false
+                    }
                 }
-                R.id.page_3 -> {
-                    viewModel.onUpdateSong(
-                        song.id,
-                        binding.songInputTitle.text.toString(),
-                        binding.songInputAuthor.text.toString(),
-                        binding.songInputUrl.text.toString()
-                    )
-                    binding.songInputTitle.text.clear()
-                    binding.songInputAuthor.text.clear()
-                    binding.songInputUrl.text.clear()
-                    true
+
+                R.id.edit -> {
+                    if (song.id != 0) {
+                        if (binding.songInputTitle.text.toString() != "" &&
+                            binding.songInputAuthor.text.toString() != "" &&
+                            binding.songInputUrl.text.toString().matches("^https://.*".toRegex())
+                        ) {
+                            if (song.title == binding.songInputTitle.text.toString() &&
+                                song.author == binding.songInputAuthor.text.toString() &&
+                                song.url == binding.songInputUrl.text.toString()
+                            ) {
+                                viewModel.onUpdateSong(
+                                    song.id,
+                                    binding.songInputTitle.text.toString(),
+                                    binding.songInputAuthor.text.toString(),
+                                    binding.songInputUrl.text.toString()
+                                )
+                                binding.songInputTitle.text.clear()
+                                binding.songInputAuthor.text.clear()
+                                binding.songInputUrl.text.clear()
+                                true
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Debe editar al menos un campo",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                false
+                            }
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Debe cumplir con los requisitos de edición",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            false
+                        }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Debe seleccionar una cancion a editar",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        false
+                    }
                 }
-                R.id.page_4 -> {
+
+                R.id.back -> {
                     val intent = Intent(this, SongActivity::class.java)
                     intent.putExtra("someChanges", someChanges)
                     setResult(RESULT_OK, intent)
                     finish()
                     true
                 }
-                R.id.page_5 -> {
-                    // Maneja el evento del elemento con id "page_5"
+
+                R.id.logOut -> {
                     true
                 }
+
                 else -> false // Manejo predeterminado para otros elementos
             }
         }
