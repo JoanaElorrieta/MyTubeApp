@@ -29,4 +29,7 @@ interface APIInterface {
     suspend fun createUser(@Body user: User): Response<Void>
     @PUT("/users/{email}")
     suspend fun updateUser(@Path("email") email: String, @Body user: User): Response<Integer>
+    @PUT("/users/{idUser},{idSong}/play")
+    suspend fun updateNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
+
 }
