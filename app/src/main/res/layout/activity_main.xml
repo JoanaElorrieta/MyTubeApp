@@ -89,6 +89,23 @@
         app:rippleColor="#B71C1C" />
 
     <Button
+        android:id="@+id/forgot"
+        android:layout_width="286dp"
+        android:layout_height="53dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/forgot"
+        android:textColor="#373737"
+        android:textColorHighlight="#DD0000"
+        android:textColorLink="#BF360C"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineInferior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rememberMe"
+        app:rippleColor="#B71C1C" />
+
+    <Button
         android:id="@+id/login"
         android:layout_width="121dp"
         android:layout_height="46dp"
@@ -114,7 +131,7 @@
         android:textColorHint="#B71C1C"
         android:textColorLink="#B71C1C"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineInferior"
+        app:layout_constraintBottom_toTopOf="@+id/forgot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -124,13 +141,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineInferior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.75"
+        app:layout_constraintTop_toBottomOf="@+id/forgot" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

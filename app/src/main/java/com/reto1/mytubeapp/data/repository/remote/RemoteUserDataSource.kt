@@ -17,8 +17,9 @@ class RemoteUserDataSource: BaseDataSource(), CommonUserRepository {
         RetrofitClient.apiInterface.createUser(user)
     }
 
-    override suspend fun updateUser(email: String, user: User) = getResult {
-        RetrofitClient.apiInterface.updateUser(email, user)
+
+    override suspend fun updateUser(email: String, password:String) = getResult {
+        RetrofitClient.apiInterface.updateUser(email, password)
     }
 
     override suspend fun updateNumberViews(idUser:Int, idSong:Int) = getResult {

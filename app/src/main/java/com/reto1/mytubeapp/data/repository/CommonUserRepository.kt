@@ -7,7 +7,7 @@ import com.reto1.mytubeapp.utils.Resource
 interface CommonUserRepository {
     suspend fun getUserByMail(email: String, password:String) : Resource<User>
     suspend fun createUser(user: User) : Resource<Void>
-    suspend fun updateUser(email: String, user: User) : Resource<Integer>
+    suspend fun updateUser(email: String, password: String) : Resource<Void>
     suspend fun updateNumberViews(idUser:Int, idSong:Int) : Resource<Integer>
 
 }

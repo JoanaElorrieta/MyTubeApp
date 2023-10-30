@@ -26,6 +26,9 @@
         <activity android:name=".ui.user.RegisterActivity" android:exported="true" android:label="Registro">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
         </activity>
+        <activity android:name=".ui.user.ChangePass" android:exported="true" android:label="Cambio de contraseña">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
+        </activity>
         <activity android:name=".ui.song.SongActivity" android:exported="true">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
     </activity>
