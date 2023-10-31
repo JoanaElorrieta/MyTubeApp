@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.ToolbarWidgetWrapper
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.internal.ToolbarUtils
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
@@ -99,6 +101,7 @@ class SongActivity : AppCompatActivity() {
                 }
             }
         }
+
         viewModel.deleted.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
@@ -115,9 +118,9 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        val topFilterMenu = findViewById<BottomNavigationView>(R.id.toolbar_song_activity)
+        val topFilterMenu = findViewById<Toolbar>(R.id.toolbar_song_activity)
 
-        topFilterMenu.setOnItemSelectedListener { item ->
+        topFilterMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.FilterTitle -> {
 
