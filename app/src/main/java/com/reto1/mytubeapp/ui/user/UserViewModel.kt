@@ -24,6 +24,9 @@ class UserViewModel(
     private val _found= MutableLiveData<Resource<User>>()
     val found : LiveData<Resource<User>> get() = _found
 
+    private val _update= MutableLiveData<Resource<Void>>()
+    val update : LiveData<Resource<Void>> get() = _update
+
     suspend fun createUser(user : User) : Resource<Void> {
         return withContext(Dispatchers.IO) {
             userRepository.createUser(user)
@@ -42,8 +45,18 @@ class UserViewModel(
     fun onSearchUser(email:String, password:String) {
         viewModelScope.launch {
             _found.value = searchUser(email,password)
-            Log.i("ViewModel",""+_found.value)
 
+        }
+    }
+    suspend fun updateUser(email:String, password:String) : Resource<Void> {
+        return withContext(Dispatchers.IO) {
+            userRepository.updateUser(email, password)
+        }
+    }
+    fun onUpdateUser(email: String, password:String) {
+        viewModelScope.launch {
+            _update.value = updateUser(email,password)
+            Log.i("ViewModel",""+_update.value)
         }
     }
 

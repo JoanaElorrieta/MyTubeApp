@@ -27,8 +27,8 @@ interface APIInterface {
     suspend fun getUserByMail(@Path("email") email: String, @Path("password") password: String): Response<User>
     @POST("/users")
     suspend fun createUser(@Body user: User): Response<Void>
-    @PUT("/users/{email}")
-    suspend fun updateUser(@Path("email") email: String, @Body user: User): Response<Integer>
+    @PUT("/users/{email},{password}")
+    suspend fun updateUser(@Path("email") email: String, @Path("password") password: String): Response<Void>
     @PUT("/users/{idUser},{idSong}/play")
     suspend fun updateNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
 

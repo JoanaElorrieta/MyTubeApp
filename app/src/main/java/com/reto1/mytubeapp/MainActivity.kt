@@ -15,10 +15,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.ui.song.SongActivity
+import com.reto1.mytubeapp.ui.user.ChangePass
 import com.reto1.mytubeapp.ui.user.RegisterActivity
 import com.reto1.mytubeapp.ui.user.UserAdapter
 import com.reto1.mytubeapp.ui.user.UserViewModel
@@ -29,6 +29,7 @@ import java.util.regex.Pattern
 class MainActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val USER_REQUEST_CODE = 1
+    private val USER_UPDATE_CODE = 2
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
 
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             @Suppress("DEPRECATION")
             startActivityForResult(intent, USER_REQUEST_CODE)
+        }
+        findViewById<Button>(R.id.forgot).setOnClickListener {
+            val intent = Intent(this, ChangePass::class.java)
+            @Suppress("DEPRECATION")
+            startActivityForResult(intent, USER_UPDATE_CODE)
         }
         findViewById<Button>(R.id.login).setOnClickListener {
             var email = findViewById<EditText>(R.id.email).text.toString()
@@ -81,7 +87,6 @@ class MainActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == USER_REQUEST_CODE && resultCode == RESULT_OK) {
             val user = data?.getParcelableExtra<User>("user")
             Log.i("Main", "" + user)
@@ -89,6 +94,12 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.email).setText(user.email)
                 findViewById<EditText>(R.id.password).setText(user.password)
             }
+        }else if (requestCode == USER_UPDATE_CODE && resultCode == RESULT_OK){
+            var email=data?.getStringExtra("email") ?: ""
+            val password=data?.getStringExtra("password") ?: ""
+            Log.i("ViewModel",""+email)
+            findViewById<EditText>(R.id.email).setText(email)
+            findViewById<EditText>(R.id.password).setText(password)
         }
     }
 
@@ -99,8 +110,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.email).visibility = View.VISIBLE
         findViewById<Button>(R.id.login).visibility = View.VISIBLE
         findViewById<Button>(R.id.rememberMe).visibility = View.VISIBLE
-        findViewById<Button>(R.id.register).visibility = View.VISIBLE
         findViewById<Button>(R.id.notNow).visibility = View.VISIBLE
+        findViewById<Button>(R.id.forgot).visibility = View.VISIBLE
+        findViewById<Button>(R.id.register).visibility = View.VISIBLE
     }
 
     fun checkData(): Boolean {
