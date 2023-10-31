@@ -8,6 +8,12 @@
         android:title="@string/text_label_4"/>
 
     <item
+        android:id="@+id/favorite"
+        android:enabled="true"
+        android:icon="@android:drawable/star_big_off"
+        android:title="@string/favorite"/>
+
+    <item
         android:id="@+id/configMenu"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_manage"

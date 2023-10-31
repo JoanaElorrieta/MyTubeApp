@@ -1,5 +1,6 @@
 package com.reto1.mytubeapp.ui.song
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,8 @@ class SongActivity : AppCompatActivity() {
     private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
     private lateinit var song: Song
     private var isToolbarVisible = false
+
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +44,7 @@ class SongActivity : AppCompatActivity() {
 
         binding.songsList.adapter = songAdapter
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_song_activity)
         setSupportActionBar(toolbar)
         supportActionBar?.title = ""
 
@@ -112,8 +115,25 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        val bottomNavigationView =
-            findViewById<BottomNavigationView>(R.id.bottom_menu_song_activity)
+        val topFilterMenu = findViewById<BottomNavigationView>(R.id.toolbar_song_activity)
+
+        topFilterMenu.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.FilterTitle -> {
+
+                    true
+                }
+
+                R.id.FilterAuthor -> {
+
+                    true
+                }
+
+                else -> false // Manejo predeterminado para otros elementos
+            }
+        }
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_menu_song_activity)
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {

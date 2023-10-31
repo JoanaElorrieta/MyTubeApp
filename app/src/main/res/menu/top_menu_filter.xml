@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/icon"
-        android:icon="@drawable/free_youtube_logo_icon_2431_thumb"
-        android:title="@string/icono" />
+        android:id="@+id/FilterTitle"
+        android:title="@string/filtro_t_tulo" />
+
+    <item
+        android:id="@+id/FilterAuthor"
+        android:title="@string/filtro_autor" />
 
 </menu>
