@@ -17,18 +17,14 @@ data class User(
         name: String,
         lastName: String,
         email: String,
-        password: String,
-        listSongFavs: List<Song>,
-        views: List<Integer>,
-
-        ) : this(
+        password: String
+    ) : this(
         id = 0, // valor por defecto
         name = name,
         lastName = lastName,
         email = email,
         password = password,
-        listSongFavs = listSongFavs,
-        views=views
-        )
-
+        listSongFavs = emptyList(),
+        views = emptyList()
+    )
 }

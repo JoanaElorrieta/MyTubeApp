@@ -18,8 +18,8 @@ class UserViewModel(
     private val userRepository: CommonUserRepository
 ) : ViewModel() {
 
-    private val _created = MutableLiveData<Resource<Void>>()
-    val created : LiveData<Resource<Void>> get() = _created
+    private val _created = MutableLiveData<Resource<Integer>>()
+    val created : LiveData<Resource<Integer>> get() = _created
 
     private val _found= MutableLiveData<Resource<User>>()
     val found : LiveData<Resource<User>> get() = _found
@@ -27,9 +27,9 @@ class UserViewModel(
     private val _update= MutableLiveData<Resource<Void>>()
     val update : LiveData<Resource<Void>> get() = _update
 
-    suspend fun createUser(user : User) : Resource<Void> {
+    suspend fun createUser(user : User) : Resource<Integer> {
         return withContext(Dispatchers.IO) {
-            userRepository.createUser(user)
+            userRepository.signIn(user)
         }
     }
     fun onCreateUser(user: User) {

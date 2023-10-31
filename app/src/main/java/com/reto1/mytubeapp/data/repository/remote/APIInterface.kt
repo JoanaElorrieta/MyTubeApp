@@ -31,5 +31,7 @@ interface APIInterface {
     suspend fun updateUser(@Path("email") email: String, @Path("password") password: String): Response<Void>
     @PUT("/users/{idUser},{idSong}/play")
     suspend fun updateNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
+    @POST("/auth/signup")
+    suspend fun signIn(@Body user:User): Response<Integer>
 
 }
