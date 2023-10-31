@@ -42,7 +42,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, "Ya existe un usuario con este correo", Toast.LENGTH_LONG)
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
                         .show()
                 }
 
@@ -76,8 +76,6 @@ class RegisterActivity : AppCompatActivity() {
     //Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
 //Formato correcto lo pasa, si no lo pasa como null
     fun checkData(): User? {
-        val listSongsFav: List<Song> = emptyList()
-        val views: List<Integer> = emptyList()
         val email = findViewById<EditText>(R.id.email).text.toString()
         val name = findViewById<EditText>(R.id.name).text.toString()
         val surname = findViewById<EditText>(R.id.surname).text.toString()
@@ -96,7 +94,7 @@ class RegisterActivity : AppCompatActivity() {
 
         if (password == password2) {
             if (password.length >= 8) {
-                return User(name, surname, email, password, listSongsFav, views)
+                return User(name, surname, email, password)
             } else {
                 Toast.makeText(
                     this,
