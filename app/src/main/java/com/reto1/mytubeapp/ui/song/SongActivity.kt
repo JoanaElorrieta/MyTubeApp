@@ -34,6 +34,7 @@ class SongActivity : AppCompatActivity() {
         fun onEmployeesListClickItem(song: Song) {
             this.song = song
         }
+
         songAdapter = SongAdapter(::onEmployeesListClickItem)
         binding.songsList.adapter = songAdapter
 
@@ -139,6 +140,13 @@ class SongActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.back -> {
                     finish()
+                    true
+                }
+
+                R.id.favorite -> {
+
+
+
                     true
                 }
 

@@ -1,6 +1,7 @@
 package com.reto1.mytubeapp.ui.song
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -54,6 +55,10 @@ class SongAdapter(
         fun bind(song: Song) {
             binding.textViewTitle.text = song.title
             binding.textViewSubtitle1.text = song.author
+            binding.imageViewFavorite.setOnClickListener {
+                // Cuando se hace clic en el ImageButton, muestra la información en el log
+                Log.d("SongAdapter", "Song Title: ${song.title}, Author: ${song.author}, URL: ${song.url}")
+            }
         }
     }
 
