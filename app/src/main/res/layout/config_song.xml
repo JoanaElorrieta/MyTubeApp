@@ -99,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_config_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

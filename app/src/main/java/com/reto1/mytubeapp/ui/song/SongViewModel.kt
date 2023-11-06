@@ -1,5 +1,6 @@
 package com.reto1.mytubeapp.ui.song
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,8 +32,8 @@ class SongViewModel(
     init { updateSongList() }
     fun updateSongList() {
         viewModelScope.launch {
-            val repoResponse = getSongsFromRepository()
-            _items.value = repoResponse
+            Log.i("ViewModel",""+_items.value)
+            _items.value = getSongsFromRepository()
         }
     }
     private suspend fun getSongsFromRepository() : Resource<List<Song>> {
@@ -47,7 +48,7 @@ class SongViewModel(
         }
     }
     fun onUpdateSong(id: Int, title: String, author: String, url:String) {
-        val song = Song(id,title, author, url)
+        val song = Song(title, author, url)
         viewModelScope.launch {
             _updated.value = updateSong(id,song)
         }

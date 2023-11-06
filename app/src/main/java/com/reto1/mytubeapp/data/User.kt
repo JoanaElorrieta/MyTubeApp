@@ -11,7 +11,8 @@ data class User(
     val email: String,
     val password: String,
     val listSongFavs: List<Song>,
-    val views: List<Integer>
+    val views: List<Integer>,
+    val accessToken:String
 ): Parcelable {
     constructor(
         name: String,
@@ -25,6 +26,21 @@ data class User(
         email = email,
         password = password,
         listSongFavs = emptyList(),
-        views = emptyList()
+        views = emptyList(),
+        accessToken=""
     )
+    constructor(
+        email: String,
+        accessToken:String
+    ) : this(
+        id = 0, // valor por defecto
+        name = "",
+        lastName = "",
+        email = email,
+        password = "",
+        listSongFavs = emptyList(),
+        views = emptyList(),
+        accessToken=accessToken
+    )
+
 }
