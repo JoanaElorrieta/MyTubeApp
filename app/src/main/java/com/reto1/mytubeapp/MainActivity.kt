@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                         val accessToken = user.data?.accessToken
                         Log.i("Login", "" + accessToken)
                         if (accessToken != null) {
+                            MyTube.userPreferences.saveAuthToken(accessToken)
                             viewModel.getUserInfo("Bearer "+accessToken)
                         }
                     }
