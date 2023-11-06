@@ -97,6 +97,7 @@ class SongConfig : AppCompatActivity() {
                 }
             }
         }
+
         viewModel.deleted.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
