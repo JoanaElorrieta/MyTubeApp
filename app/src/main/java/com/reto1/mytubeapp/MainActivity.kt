@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
             var email = findViewById<EditText>(R.id.email).text.toString()
             var password = findViewById<EditText>(R.id.password).text.toString()
             if(checkData()){
-                viewModel.onSearchUser(email, password)
+               viewModel.onSearchUser(email, password)
+
             }
 
 
@@ -68,6 +69,32 @@ class MainActivity : AppCompatActivity() {
         viewModel.found.observe(this, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
+                    var user=viewModel.found.value
+
+                    if (user != null) {
+                        val accessToken = user.data?.accessToken
+                        Log.i("Login", "" + accessToken)
+                        if (accessToken != null) {
+                            viewModel.getUserInfo("Bearer "+accessToken)
+                        }
+                    }
+                }
+
+                Resource.Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
+                        .show()
+                }
+
+                Resource.Status.LOADING -> {
+
+                }
+            }
+        })
+
+        viewModel.user.observe(this, Observer {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+
                     val intent = Intent(this, SongActivity::class.java)
                     startActivity(intent)
                 }
@@ -83,6 +110,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

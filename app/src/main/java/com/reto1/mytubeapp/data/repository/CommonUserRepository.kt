@@ -15,4 +15,5 @@ interface CommonUserRepository {
     suspend fun updateNumberViews(idUser: Int, idSong: Int): Resource<Integer>
     suspend fun signIn(user: User): Resource<Integer>
     suspend fun login(authRequest: AuthRequest): Resource<User>
+    suspend fun getUserInfo(authorizationHeader: String): Resource<User>
 }

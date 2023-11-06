@@ -27,6 +27,8 @@ class UserViewModel(
 
     private val _update= MutableLiveData<Resource<Void>>()
     val update : LiveData<Resource<Void>> get() = _update
+    private val _user= MutableLiveData<Resource<User>>()
+    val user : LiveData<Resource<User>> get() = _user
 
     suspend fun createUser(user : User) : Resource<Integer> {
         return withContext(Dispatchers.IO) {
@@ -59,6 +61,17 @@ class UserViewModel(
         viewModelScope.launch {
             _update.value = updateUser(email,password)
             Log.i("ViewModel",""+_update.value)
+        }
+    }
+    fun getUserInfo(accessToken:String){
+        viewModelScope.launch {
+            _user.value = getInfo(accessToken)
+            Log.i("ViewModel",""+_user.value)
+        }
+    }
+    suspend fun getInfo(accessToken:String) : Resource<User> {
+        return withContext(Dispatchers.IO) {
+            userRepository.getUserInfo(accessToken)
         }
     }
 

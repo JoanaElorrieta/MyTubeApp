@@ -36,5 +36,7 @@ interface APIInterface {
     suspend fun signIn(@Body user:User): Response<Integer>
     @POST("/auth/login")
     suspend fun login(@Header("Authorization") authorizationHeader: String, @Body authRequest: AuthRequest): Response<User>
+    @GET("/auth/me")
+    suspend fun getUserInfo(@Header("Authorization") authorizationHeader: String): Response<User>
 
 }
