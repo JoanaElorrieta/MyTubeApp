@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.reto1.mytubeapp.data.AuthRequest
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.CommonUserRepository
 import com.reto1.mytubeapp.utils.Resource
@@ -39,13 +40,14 @@ class UserViewModel(
     }
     suspend fun searchUser(email:String, password:String) : Resource<User> {
         return withContext(Dispatchers.IO) {
-            userRepository.getUserByMail(email, password)
+            var user= AuthRequest(email,password)
+            userRepository.login(user)
         }
     }
     fun onSearchUser(email:String, password:String) {
         viewModelScope.launch {
             _found.value = searchUser(email,password)
-
+            Log.i("Viewmodel", ""+_found.value)
         }
     }
     suspend fun updateUser(email:String, password:String) : Resource<Void> {

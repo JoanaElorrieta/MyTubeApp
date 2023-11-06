@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, "El login no es correcto", Toast.LENGTH_LONG)
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
                         .show()
                 }
 
