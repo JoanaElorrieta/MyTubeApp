@@ -19,15 +19,6 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_song_activity"
         app:layout_constraintVertical_bias="1.0" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_menu_song_activity"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_menu_song_activity" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_song_activity"
         android:layout_width="match_parent"
@@ -61,22 +52,42 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="105dp"
-        android:layout_height="24dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="72dp" />
-
     <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/editTextFilter"
+        android:layout_width="212dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="95dp"
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="106dp" />
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/songs_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFilter" />
+
+    <TextView
+        android:id="@+id/textViewFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="198dp"
+        android:layout_marginBottom="7dp"
+        android:text="@string/filtrado_por_autor"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/editTextFilter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_song_activity" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_menu_song_activity"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_menu_song_activity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

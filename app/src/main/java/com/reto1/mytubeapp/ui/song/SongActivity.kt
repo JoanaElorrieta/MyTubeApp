@@ -3,17 +3,13 @@ package com.reto1.mytubeapp.ui.song
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.appcompat.widget.ToolbarWidgetWrapper
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.internal.ToolbarUtils
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
@@ -27,36 +23,28 @@ class SongActivity : AppCompatActivity() {
     private val songRepository = RemoteSongDataSource()
     private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
     private lateinit var song: Song
-    private var isToolbarVisible = false
-
-    @SuppressLint("CutPasteId")
+    private var currentFilterField: String? = null
+    private lateinit var binding: SongActivityBinding
+    @SuppressLint("CutPasteId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val binding = SongActivityBinding.inflate(layoutInflater)
+        binding = SongActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         fun onEmployeesListClickItem(song: Song) {
-
             this.song = song
-
         }
-
         songAdapter = SongAdapter(::onEmployeesListClickItem)
-
         binding.songsList.adapter = songAdapter
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar_song_activity)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbarSongActivity)
         supportActionBar?.title = ""
 
         viewModel.items.observe(this) {
-            Log.i("PruebasDia1", "ha ocurrido un cambio en la lista")
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     if (!it.data.isNullOrEmpty()) {
                         songAdapter.submitList(it.data)
-                        Log.i("PruebasDia1", "ha entrado")
                     }
                 }
 
@@ -118,27 +106,36 @@ class SongActivity : AppCompatActivity() {
             }
         }
 
-        val topFilterMenu = findViewById<Toolbar>(R.id.toolbar_song_activity)
-
-        topFilterMenu.setOnMenuItemClickListener { item ->
+        binding.toolbarSongActivity.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.FilterTitle -> {
+                    changeFilterField("title")
+                    binding.textViewFilter.text = "Filtrado por Título"
+                    binding.editTextFilter.hint = "Titulo"
 
+                    binding.textViewFilter.visibility = View.VISIBLE
+                    binding.editTextFilter.visibility = View.VISIBLE
+
+                    binding.editTextFilter.text.clear()
                     true
                 }
 
                 R.id.FilterAuthor -> {
+                    changeFilterField("author")
+                    binding.textViewFilter.text = "Filtrado por Autor"
+                    binding.editTextFilter.hint = "Autor"
 
+                    binding.textViewFilter.visibility = View.VISIBLE
+                    binding.editTextFilter.visibility = View.VISIBLE
+
+                    binding.editTextFilter.text.clear()
                     true
                 }
-
                 else -> false // Manejo predeterminado para otros elementos
             }
         }
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_menu_song_activity)
-
-        bottomNavigationView.setOnItemSelectedListener { item ->
+        binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.back -> {
                     finish()
@@ -155,22 +152,53 @@ class SongActivity : AppCompatActivity() {
                 else -> false // Manejo predeterminado para otros elementos
             }
         }
+
+        binding.editTextFilter.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No es necesario implementar esto
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Cuando cambie el texto, filtra la lista y actualiza el adaptador
+                val searchText = s.toString().trim()
+                filterSongList(searchText)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No es necesario implementar esto
+            }
+        })
+
+        // Observa los cambios en la lista de canciones en el ViewModel y actualiza el adaptador
+        viewModel.items.observe(this) { resource ->
+                val songs = resource.data
+                songAdapter.submitList(songs)
+        }
+
+    }
+
+    private fun filterSongList(searchText: String) {
+        val filteredList = viewModel.items.value?.data?.filter { song ->
+            when (currentFilterField ?: "title") {
+                "title" -> song.title.contains(searchText, ignoreCase = true)
+                "author" -> song.author.contains(searchText, ignoreCase = true)
+                else -> false // Filtro no válido
+            }
+        }
+        songAdapter.submitList(filteredList)
+    }
+
+    private fun changeFilterField(newField: String) {
+        currentFilterField = newField
+        binding.textViewFilter.text = newField
+        // Luego, llama a filterSongList para aplicar el nuevo filtro
+        val searchText = binding.editTextFilter.text.toString().trim()
+        filterSongList(searchText)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_menu_filter, menu)
+        menuInflater.inflate(R.menu.top_menu_filter,menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-//            R.id. -> {
-//                // Manejar la selección del filtro de título
-//                true
-//            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     @Deprecated("Deprecated in Java")

@@ -29,7 +29,8 @@
         <activity android:name=".ui.user.ChangePass" android:exported="true" android:label="Cambio de contraseña">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".ui.song.SongActivity" android:exported="true">
+        <activity android:name=".ui.song.SongActivity" android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"/>
     </activity>
         <activity android:name=".ui.song.SongConfig" android:exported="true"

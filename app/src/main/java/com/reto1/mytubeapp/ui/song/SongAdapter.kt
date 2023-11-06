@@ -21,7 +21,6 @@ class SongAdapter(
         return SongViewHolder(binding)
     }
 
-
     override fun onBindViewHolder(
         holder: SongViewHolder,
         position: Int
