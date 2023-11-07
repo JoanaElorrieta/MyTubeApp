@@ -9,5 +9,5 @@ interface CommonSongRepository {
     suspend fun updateSong(id: Int, song: Song) : Resource<Void>
     suspend fun deleteSong(id: Int) : Resource<Integer>
     suspend fun getSongById(id: Int) : Resource<Song>
-
+    suspend fun updateNumberViews(idUser: Int, idSong: Int): Resource<Void>
 }

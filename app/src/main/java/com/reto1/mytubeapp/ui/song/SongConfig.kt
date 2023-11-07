@@ -39,7 +39,7 @@ class SongConfig : AppCompatActivity() {
 
         }
 
-        songAdapter = SongAdapter(::onEmployeesListClickItem)
+        songAdapter = SongAdapter(::onEmployeesListClickItem,viewModel)
 
         binding.songsList.adapter = songAdapter
 

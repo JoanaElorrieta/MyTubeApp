@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -16,7 +15,8 @@ import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.databinding.ItemSongBinding
 
 class SongAdapter(
-    private val onClickListener: (Song) -> Unit
+    private val onClickListener: (Song) -> Unit,
+    private val viewModel: SongViewModel
 ) : ListAdapter<Song, SongAdapter.SongViewHolder>(SongDiffCallback()) {
 
     private var lastSelectedPosition = RecyclerView.NO_POSITION
@@ -78,6 +78,10 @@ class SongAdapter(
                 intent.setPackage("com.android.chrome")
                 try {
                     itemView.context.startActivity(intent)
+                    var idUser=MyTube.userPreferences.getUser()?.id
+                    if (idUser != null) {
+                        viewModel.onUpdateViews(idUser,song.id)
+                    }
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(itemView.context, "No hay navegadores web instalados.", Toast.LENGTH_SHORT).show()
                 }

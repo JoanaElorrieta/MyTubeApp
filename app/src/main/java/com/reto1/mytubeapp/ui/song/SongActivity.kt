@@ -45,7 +45,7 @@ class SongActivity : AppCompatActivity() {
             return input.substring(0, 1).uppercase(Locale.ROOT) + input.substring(1)
         }
 
-        songAdapter = SongAdapter(::onSongListClickItem)
+        songAdapter = SongAdapter(::onSongListClickItem,viewModel)
         binding.songsList.adapter = songAdapter
 
         setSupportActionBar(binding.toolbarSongActivity)
@@ -102,6 +102,21 @@ class SongActivity : AppCompatActivity() {
         }
 
         viewModel.deleted.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    viewModel.updateSongList()
+                }
+
+                Resource.Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+
+                Resource.Status.LOADING -> {
+                    // de momento
+                }
+            }
+        }
+        viewModel.updatedViews.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     viewModel.updateSongList()
