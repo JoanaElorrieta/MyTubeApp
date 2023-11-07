@@ -75,7 +75,9 @@ class MainActivity : AppCompatActivity() {
                         val accessToken = user.data?.accessToken
                         Log.i("Login", "" + accessToken)
                         if (accessToken != null) {
+                            MyTube.userPreferences.saveAuthToken(accessToken)
                             viewModel.getUserInfo("Bearer "+accessToken)
+
                         }
                     }
                 }
@@ -94,7 +96,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.user.observe(this, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-
+                    val userResource = viewModel.user.value
+                    if (userResource != null && userResource.status == Resource.Status.SUCCESS) {
+                        val user = userResource.data
+                        if (user != null) {
+                            MyTube.userPreferences.saveUser(user)
+                        }
+                    }
                     val intent = Intent(this, SongActivity::class.java)
                     startActivity(intent)
                 }

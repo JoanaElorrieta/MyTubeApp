@@ -31,11 +31,11 @@ class SongActivity : AppCompatActivity() {
         binding = SongActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fun onEmployeesListClickItem(song: Song) {
+        fun onSongListClickItem(song: Song) {
             this.song = song
         }
 
-        songAdapter = SongAdapter(::onEmployeesListClickItem)
+        songAdapter = SongAdapter(::onSongListClickItem)
         binding.songsList.adapter = songAdapter
 
         setSupportActionBar(binding.toolbarSongActivity)
