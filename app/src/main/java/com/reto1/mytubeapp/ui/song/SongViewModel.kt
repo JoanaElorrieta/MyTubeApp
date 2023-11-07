@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.CommonSongRepository
 import com.reto1.mytubeapp.utils.Resource
@@ -29,10 +30,10 @@ class SongViewModel(
 
     private val _deleted = MutableLiveData<Resource<Integer>>()
     val deleted : LiveData<Resource<Integer>> get() = _deleted
+
     init { updateSongList() }
     fun updateSongList() {
         viewModelScope.launch {
-            Log.i("ViewModel",""+_items.value)
             _items.value = getSongsFromRepository()
         }
     }
@@ -58,6 +59,7 @@ class SongViewModel(
             _deleted.value = deleteSong(id)
         }
     }
+
     private suspend fun createSong(song: Song): Resource<Void> {
         return withContext(Dispatchers.IO) {
             songRepository.createSong(song)

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.databinding.ItemSongBinding
 
@@ -60,8 +61,7 @@ class SongAdapter(
             binding.textViewTitle.text = song.title
             binding.textViewAuthor.text = song.author
             binding.imageViewFavorite.setOnClickListener {
-                // Cuando se hace clic en el ImageButton, muestra la información en el log
-                Log.d("SongAdapter", "Song Title: ${song.title}, Author: ${song.author}, URL: ${song.url}")
+                MyTube.userPreferences.getUser()?.listSongFavs
             }
             binding.imageViewPlay.setOnClickListener {
                 val youtubeUrl = song.url
@@ -70,8 +70,7 @@ class SongAdapter(
                 try {
                     itemView.context.startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
-                    itemView.context.startActivity(browserIntent)
+                    Toast.makeText(itemView.context, "No hay navegadores web instalados.", Toast.LENGTH_SHORT).show()
                 }
             }
         }

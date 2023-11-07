@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
@@ -25,6 +26,7 @@ class SongActivity : AppCompatActivity() {
     private lateinit var song: Song
     private var currentFilterField: String? = null
     private lateinit var binding: SongActivityBinding
+    private var isFavorite = false
     @SuppressLint("CutPasteId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +139,7 @@ class SongActivity : AppCompatActivity() {
         }
 
         binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
+
             when (item.itemId) {
                 R.id.back -> {
                     finish()
@@ -145,8 +148,27 @@ class SongActivity : AppCompatActivity() {
 
                 R.id.favorite -> {
 
+                    if (!isFavorite) {
 
+                        //Lista de canciones favoritas
+                        songAdapter.submitList(MyTube.userPreferences.getUser()?.listSongFavs)
 
+                        //Icono de lista total
+                        item.setIcon(R.drawable.music_note)
+                        item.title = "Canciones"
+                        isFavorite = true
+
+                    }else {
+
+                        //Lista de canciones total
+                        viewModel.updateSongList()
+
+                        //Icono de favoritos
+                        item.setIcon(android.R.drawable.star_big_on)
+                        item.title = "Favoritas"
+                        isFavorite = false
+
+                    }
                     true
                 }
 
