@@ -30,6 +30,8 @@ class SongViewModel(
 
     private val _deleted = MutableLiveData<Resource<Integer>>()
     val deleted : LiveData<Resource<Integer>> get() = _deleted
+    private val _updatedViews= MutableLiveData<Resource<Void>>()
+    val updatedViews : LiveData<Resource<Void>> get() = _updatedViews
 
     init { updateSongList() }
     fun updateSongList() {
@@ -73,6 +75,16 @@ class SongViewModel(
     private suspend fun deleteSong(id:Int): Resource<Integer> {
         return withContext(Dispatchers.IO) {
             songRepository.deleteSong(id)
+        }
+    }
+    fun onUpdateViews(idUser: Int, idSong:Int) {
+        viewModelScope.launch {
+            _updatedViews.value = updateViews(idUser,idSong)
+        }
+    }
+    private suspend fun updateViews(idUser: Int, idSong:Int): Resource<Void> {
+        return withContext(Dispatchers.IO) {
+            songRepository.updateNumberViews(idUser,idSong)
         }
     }
 }

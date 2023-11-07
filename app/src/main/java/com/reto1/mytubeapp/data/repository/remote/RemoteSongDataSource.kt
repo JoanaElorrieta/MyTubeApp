@@ -22,4 +22,7 @@ class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
     override suspend fun getSongById(id: Int) = getResult {
         RetrofitClient.apiInterface.getSongById(id)
     }
+    override suspend fun updateNumberViews(idUser:Int, idSong:Int) = getResult {
+        RetrofitClient.apiInterface.updateNumberViews(idUser, idSong)
+    }
 }
