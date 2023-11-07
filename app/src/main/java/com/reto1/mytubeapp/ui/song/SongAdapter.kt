@@ -1,9 +1,13 @@
 package com.reto1.mytubeapp.ui.song
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -54,10 +58,21 @@ class SongAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(song: Song) {
             binding.textViewTitle.text = song.title
-            binding.textViewSubtitle1.text = song.author
+            binding.textViewAuthor.text = song.author
             binding.imageViewFavorite.setOnClickListener {
                 // Cuando se hace clic en el ImageButton, muestra la información en el log
                 Log.d("SongAdapter", "Song Title: ${song.title}, Author: ${song.author}, URL: ${song.url}")
+            }
+            binding.imageViewPlay.setOnClickListener {
+                val youtubeUrl = song.url
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+                intent.setPackage("com.android.chrome")
+                try {
+                    itemView.context.startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+                    itemView.context.startActivity(browserIntent)
+                }
             }
         }
     }

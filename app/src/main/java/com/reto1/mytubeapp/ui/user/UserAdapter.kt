@@ -25,7 +25,7 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserAdapter.Us
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val textViewTitle = itemView.findViewById<TextView>(R.id.textViewTitle)
-        private val textViewSubtitle1 = itemView.findViewById<TextView>(R.id.textViewSubtitle1)
+        private val textViewSubtitle1 = itemView.findViewById<TextView>(R.id.textViewAuthor)
 
         fun bind(user: User) {
             textViewTitle.text = user.name
