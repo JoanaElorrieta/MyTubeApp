@@ -37,6 +37,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#00FFFFFF"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        app:srcCompat="@android:drawable/star_big_on" />
 
 </LinearLayout>

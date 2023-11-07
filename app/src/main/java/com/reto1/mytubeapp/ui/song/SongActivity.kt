@@ -16,6 +16,7 @@ import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
 import com.reto1.mytubeapp.utils.Resource
 import com.reto1.mytubeapp.databinding.SongActivityBinding
+import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
 
@@ -35,6 +36,13 @@ class SongActivity : AppCompatActivity() {
 
         fun onSongListClickItem(song: Song) {
             this.song = song
+        }
+
+        fun capitalizeFirstLetter(input: String?): String? {
+            if (input.isNullOrEmpty()) {
+                return input
+            }
+            return input.substring(0, 1).uppercase(Locale.ROOT) + input.substring(1)
         }
 
         songAdapter = SongAdapter(::onSongListClickItem)
@@ -139,7 +147,6 @@ class SongActivity : AppCompatActivity() {
         }
 
         binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
-
             when (item.itemId) {
                 R.id.back -> {
                     finish()
@@ -150,6 +157,8 @@ class SongActivity : AppCompatActivity() {
 
                     if (!isFavorite) {
 
+
+                        binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
                         //Lista de canciones favoritas
                         songAdapter.submitList(MyTube.userPreferences.getUser()?.listSongFavs)
 
@@ -159,6 +168,8 @@ class SongActivity : AppCompatActivity() {
                         isFavorite = true
 
                     }else {
+                        binding.titulo.text = "Listado de canciones"
+
 
                         //Lista de canciones total
                         viewModel.updateSongList()
@@ -204,7 +215,6 @@ class SongActivity : AppCompatActivity() {
                 val songs = resource.data
                 songAdapter.submitList(songs)
         }
-
     }
 
     private fun filterSongList(searchText: String) {

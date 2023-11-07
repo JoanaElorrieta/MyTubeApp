@@ -57,10 +57,19 @@ class SongAdapter(
 
     inner class SongViewHolder(private val binding: ItemSongBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        private var isFavorite = false
         fun bind(song: Song) {
             binding.textViewTitle.text = song.title
             binding.textViewAuthor.text = song.author
             binding.imageViewFavorite.setOnClickListener {
+
+                isFavorite = !isFavorite // Cambiar el estado
+
+                if (isFavorite) {
+                    binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
+                } else {
+                    binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
+                }
                 MyTube.userPreferences.getUser()?.listSongFavs
             }
             binding.imageViewPlay.setOnClickListener {
