@@ -23,6 +23,8 @@ interface APIInterface {
     suspend fun deleteSong(@Path("id") id: Int): Response<Integer>
     @GET("/songs/{id}")
     suspend fun getSongById(@Path("id") id: Int): Response<Song>
+    @GET("/songs/user/{id}")
+    suspend fun getSongsFavoriteViews(@Path("id") id: Int): Response<List<Song>>
 
     @GET("/users/{email},{password}")
     suspend fun getUserByMail(@Path("email") email: String, @Path("password") password: String): Response<User>
@@ -32,6 +34,10 @@ interface APIInterface {
     suspend fun updateUser(@Path("email") email: String, @Path("password") password: String): Response<Void>
     @PUT("/songs/{idUser},{idSong}/play")
     suspend fun updateNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
+    @POST("/songs/{idUser},{idSong}/play")
+    suspend fun insertNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
+    @GET("/songs/{idUser},{idSong}/play")
+    suspend fun selectNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
     @POST("/auth/signup")
     suspend fun signIn(@Body user:User): Response<Integer>
     @POST("/auth/login")
