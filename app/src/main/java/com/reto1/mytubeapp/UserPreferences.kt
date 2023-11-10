@@ -3,6 +3,8 @@ package com.reto1.mytubeapp
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.User
 
 class UserPreferences() {
@@ -21,6 +23,26 @@ class UserPreferences() {
     fun fetchAuthToken():String?{
         return sharedPreferences.getString(USER_TOKEN,null)
     }
+
+    fun saveFavoriteSongs(favoriteSongs: List<Song>) {
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val songsJson = gson.toJson(favoriteSongs)
+        editor.putString("listSongFavs", songsJson)
+        editor.apply()
+    }
+
+    // Agregar método para cargar la lista de canciones favoritas
+    fun loadFavoriteSongs(): List<Song> {
+        val songsJson = sharedPreferences.getString("listSongFavs", null)
+        if (songsJson != null) {
+            val gson = Gson()
+            val songListType = object : TypeToken<List<Song>>() {}.type
+            return gson.fromJson(songsJson, songListType)
+        }
+        return emptyList()
+    }
+
     fun saveUser(user: User) {
         val editor = sharedPreferences.edit()
         val gson = Gson()

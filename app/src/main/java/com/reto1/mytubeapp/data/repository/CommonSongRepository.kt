@@ -10,4 +10,6 @@ interface CommonSongRepository {
     suspend fun deleteSong(id: Int) : Resource<Integer>
     suspend fun getSongById(id: Int) : Resource<Song>
     suspend fun updateNumberViews(idUser: Int, idSong: Int): Resource<Void>
+    suspend fun createFavorite(idUser: Int, idSong: Int): Resource<Void>
+    suspend fun deleteFavorite(idUser: Int, idSong: Int): Resource<Integer>
 }

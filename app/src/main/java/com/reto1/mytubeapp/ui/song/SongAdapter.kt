@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -58,27 +59,64 @@ class SongAdapter(
     inner class SongViewHolder(private val binding: ItemSongBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isFavorite = false
+
+        private fun isSongIdInList(songIdToCheck: Int, songList: List<Song>): Boolean {
+            for (song in songList) {
+                if (song.id == songIdToCheck) {
+                    return true // El ID de la canción se encontró en la lista
+                }
+            }
+            return false // El ID de la canción no se encontró en la lista
+        }
+
         fun bind(song: Song) {
             binding.textViewTitle.text = song.title
             binding.textViewAuthor.text = song.author
+
+            val songList = MyTube.userPreferences.getUser()?.listSongFavs ?: emptyList()
+
+            if (isSongIdInList(song.id, songList)) {
+                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
+            }
+
             binding.imageViewFavorite.setOnClickListener {
 
                 isFavorite = !isFavorite // Cambiar el estado
 
                 if (isFavorite) {
-                    binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
+
+                    val userId = MyTube.userPreferences.getUser()?.id
+                    if (userId != null) {
+                        binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
+                        viewModel.onCreateFavorite(userId ,song.id)
+                        val listSongFavs = MyTube.userPreferences.loadFavoriteSongs()
+                        val listaActualizada = listSongFavs.toMutableList()
+                        listaActualizada.add(song)
+                        MyTube.userPreferences.saveFavoriteSongs(listaActualizada)
+                    }
+
                 } else {
-                    binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
+
+                    val userId = MyTube.userPreferences.getUser()?.id
+                    if (userId != null) {
+                        binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
+                        viewModel.onDeleteFavorite(userId ,song.id)
+                        val listSongFavs = MyTube.userPreferences.loadFavoriteSongs()
+                        val listaActualizada = listSongFavs.filter { it.id != song.id }
+                        MyTube.userPreferences.saveFavoriteSongs(listaActualizada)
+                    }
                 }
-                MyTube.userPreferences.getUser()?.listSongFavs
             }
+
             binding.imageViewPlay.setOnClickListener {
                 val youtubeUrl = song.url
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
                 intent.setPackage("com.android.chrome")
                 try {
                     itemView.context.startActivity(intent)
-                    var idUser=MyTube.userPreferences.getUser()?.id
+                    val idUser=MyTube.userPreferences.getUser()?.id
                     if (idUser != null) {
                         viewModel.onUpdateViews(idUser,song.id)
                     }

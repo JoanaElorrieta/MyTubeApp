@@ -53,13 +53,12 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, USER_UPDATE_CODE)
         }
         findViewById<Button>(R.id.login).setOnClickListener {
-            var email = findViewById<EditText>(R.id.email).text.toString()
-            var password = findViewById<EditText>(R.id.password).text.toString()
+            val email = findViewById<EditText>(R.id.email).text.toString()
+            val password = findViewById<EditText>(R.id.password).text.toString()
             if(checkData()){
                viewModel.onSearchUser(email, password)
 
             }
-
 
         }
         findViewById<Button>(R.id.notNow).setOnClickListener {
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.found.observe(this, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    var user=viewModel.found.value
+                    val user=viewModel.found.value
 
                     if (user != null) {
                         val accessToken = user.data?.accessToken
@@ -77,7 +76,6 @@ class MainActivity : AppCompatActivity() {
                         if (accessToken != null) {
                             MyTube.userPreferences.saveAuthToken(accessToken)
                             viewModel.getUserInfo("Bearer "+accessToken)
-
                         }
                     }
                 }
@@ -101,6 +99,8 @@ class MainActivity : AppCompatActivity() {
                         val user = userResource.data
                         if (user != null) {
                             MyTube.userPreferences.saveUser(user)
+                            MyTube.userPreferences.getUser()
+                                ?.let { it1 -> MyTube.userPreferences.saveFavoriteSongs(it1.listSongFavs) }
                         }
                     }
                     val intent = Intent(this, SongActivity::class.java)

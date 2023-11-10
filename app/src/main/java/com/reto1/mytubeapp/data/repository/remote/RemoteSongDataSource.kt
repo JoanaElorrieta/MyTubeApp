@@ -2,6 +2,7 @@ package com.reto1.mytubeapp.data.repository.remote
 
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.CommonSongRepository
+import com.reto1.mytubeapp.utils.Resource
 
 class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
     override suspend fun getSongs() = getResult {
@@ -24,5 +25,12 @@ class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
     }
     override suspend fun updateNumberViews(idUser:Int, idSong:Int) = getResult {
         RetrofitClient.apiInterface.updateNumberViews(idUser, idSong)
+    }
+    override suspend fun createFavorite(idUser: Int, idSong: Int) = getResult {
+        RetrofitClient.apiInterface.createFavorite(idUser, idSong)
+    }
+
+    override suspend fun deleteFavorite(idUser: Int, idSong: Int) = getResult {
+        RetrofitClient.apiInterface.deleteFavorite(idUser, idSong)
     }
 }

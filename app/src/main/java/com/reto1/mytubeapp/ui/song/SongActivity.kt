@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
@@ -106,16 +107,45 @@ class SongActivity : AppCompatActivity() {
                 Resource.Status.SUCCESS -> {
                     viewModel.updateSongList()
                 }
-
                 Resource.Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                 }
-
                 Resource.Status.LOADING -> {
                     // de momento
                 }
             }
         }
+
+        viewModel.updatedFavorites.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    Log.i("Prueba1", "Hola")
+                    songAdapter.submitList(MyTube.userPreferences.loadFavoriteSongs())
+                }
+                Resource.Status.ERROR -> {
+                    Log.i("Prueba1", "Hola")
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+                Resource.Status.LOADING -> {
+                }
+            }
+        }
+
+        viewModel.deletedFavorites.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    Log.i("Prueba1", "Hola")
+                    songAdapter.submitList(MyTube.userPreferences.loadFavoriteSongs())
+                }
+                Resource.Status.ERROR -> {
+                    Log.i("Prueba1", "Hola")
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+                Resource.Status.LOADING -> {
+                }
+            }
+        }
+
         viewModel.updatedViews.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
@@ -170,21 +200,20 @@ class SongActivity : AppCompatActivity() {
 
                 R.id.favorite -> {
 
-                    if (!isFavorite) {
+                    isFavorite = !isFavorite
 
+                    if (!isFavorite) {
 
                         binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
                         //Lista de canciones favoritas
-                        songAdapter.submitList(MyTube.userPreferences.getUser()?.listSongFavs)
+                        songAdapter.submitList(MyTube.userPreferences.loadFavoriteSongs())
 
                         //Icono de lista total
                         item.setIcon(R.drawable.music_note)
                         item.title = "Canciones"
-                        isFavorite = true
 
                     }else {
                         binding.titulo.text = "Listado de canciones"
-
 
                         //Lista de canciones total
                         viewModel.updateSongList()
@@ -192,7 +221,6 @@ class SongActivity : AppCompatActivity() {
                         //Icono de favoritos
                         item.setIcon(android.R.drawable.star_big_on)
                         item.title = "Favoritas"
-                        isFavorite = false
 
                     }
                     true

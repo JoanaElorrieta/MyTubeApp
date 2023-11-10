@@ -30,8 +30,17 @@ class SongViewModel(
 
     private val _deleted = MutableLiveData<Resource<Integer>>()
     val deleted : LiveData<Resource<Integer>> get() = _deleted
-    private val _updatedViews= MutableLiveData<Resource<Void>>()
+
+    private val _updatedViews = MutableLiveData<Resource<Void>>()
     val updatedViews : LiveData<Resource<Void>> get() = _updatedViews
+
+    private val _updatedFavorites = MutableLiveData<Resource<Void>>()
+
+    val updatedFavorites :  LiveData<Resource<Void>> get() = _updatedFavorites
+
+    private val _deletedFavorites = MutableLiveData<Resource<Integer>>()
+
+    val deletedFavorites = MutableLiveData<Resource<Integer>>()
 
     init { updateSongList() }
     fun updateSongList() {
@@ -87,6 +96,29 @@ class SongViewModel(
             songRepository.updateNumberViews(idUser,idSong)
         }
     }
+
+    fun onCreateFavorite(idUser: Int, idSong:Int) {
+        viewModelScope.launch {
+            _updatedFavorites.value = createFavorite(idUser,idSong)
+        }
+    }
+    private suspend fun createFavorite(idUser: Int, idSong:Int): Resource<Void> {
+        return withContext(Dispatchers.IO) {
+            songRepository.createFavorite(idUser,idSong)
+        }
+    }
+
+    fun onDeleteFavorite(idUser: Int, idSong:Int) {
+        viewModelScope.launch {
+            _deletedFavorites.value = deleteFavorite(idUser,idSong)
+        }
+    }
+    private suspend fun deleteFavorite(idUser: Int, idSong:Int): Resource<Integer> {
+        return withContext(Dispatchers.IO) {
+            songRepository.deleteFavorite(idUser,idSong)
+        }
+    }
+
 }
 
 class SongViewModelFactory(

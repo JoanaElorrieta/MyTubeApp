@@ -10,7 +10,7 @@ data class User(
     val lastName: String,
     val email: String,
     val password: String,
-    val listSongFavs: List<Song>,
+    var listSongFavs: List<Song>,
     val views: List<Integer>,
     val accessToken:String
 ): Parcelable {
