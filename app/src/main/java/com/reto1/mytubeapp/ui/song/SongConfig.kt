@@ -39,7 +39,7 @@ class SongConfig : AppCompatActivity() {
 
         }
 
-        songAdapter = SongAdapter(::onEmployeesListClickItem, ::onPlayClickListener)
+        songAdapter = SongAdapter(::onEmployeesListClickItem, ::onPlayClickListener, ::onFavoriteClickListener)
 
         binding.songsList.adapter = songAdapter
 
@@ -235,6 +235,10 @@ class SongConfig : AppCompatActivity() {
     }
 
     fun onPlayClickListener(song: Song) {
+
+    }
+
+    fun onFavoriteClickListener(song: Song) {
 
     }
 }

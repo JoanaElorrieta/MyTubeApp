@@ -99,8 +99,6 @@ class MainActivity : AppCompatActivity() {
                         val user = userResource.data
                         if (user != null) {
                             MyTube.userPreferences.saveUser(user)
-                            MyTube.userPreferences.getUser()
-                                ?.let { it1 -> MyTube.userPreferences.saveFavoriteSongs(it1.listSongFavs) }
                         }
                     }
                     val intent = Intent(this, SongActivity::class.java)

@@ -35,6 +35,7 @@ class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
 
     override suspend fun deleteFavorite(idUser: Int, idSong: Int) = getResult {
         RetrofitClient.apiInterface.deleteFavorite(idUser, idSong)
+    }
     override suspend fun insertNumberViews(idUser:Int, idSong:Int) = getResult {
         RetrofitClient.apiInterface.insertNumberViews(idUser, idSong)
     }

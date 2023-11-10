@@ -22,6 +22,9 @@ class SongViewModel(
     private val _items = MutableLiveData<Resource<List<Song>>>()
     val items : LiveData<Resource<List<Song>>> get() = _items
 
+    private val _items2 = MutableLiveData<Resource<List<Song>>>()
+    val items2 : LiveData<Resource<List<Song>>> get() = _items2
+
     private val _created = MutableLiveData<Resource<Void>>()
     val created : LiveData<Resource<Void>> get() = _created
 
@@ -37,25 +40,28 @@ class SongViewModel(
     val insertedViews : LiveData<Resource<Void>> get() = _insertedViews
 
     private val _updatedFavorites = MutableLiveData<Resource<Void>>()
-
-    val updatedFavorites :  LiveData<Resource<Void>> get() = _updatedFavorites
+    val updatedFavorites : LiveData<Resource<Void>> get() = _updatedFavorites
 
     private val _deletedFavorites = MutableLiveData<Resource<Integer>>()
 
-    val deletedFavorites = MutableLiveData<Resource<Integer>>()
+    val deletedFavorites : LiveData<Resource<Integer>> get() = _deletedFavorites
 
     init { updateSongList() }
     fun updateSongList() {
         viewModelScope.launch {
             _items.value = getSongsFromRepository()
+        }
+    }
 
+    fun updateSongList2() {
+        viewModelScope.launch {
+            _items2.value = getSongsFromRepository()
         }
     }
     private suspend fun getSongsFromRepository() : Resource<List<Song>> {
         return withContext(Dispatchers.IO) {
-            var userId=MyTube.userPreferences.getUser()?.id
+            val userId=MyTube.userPreferences.getUser()?.id
             if (userId != null) {
-                Log.i("ViewModel","HOLa")
                 songRepository.getSongsFavoriteViews(userId)
             }else{
                 songRepository.getSongs()

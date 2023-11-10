@@ -20,7 +20,8 @@ import com.reto1.mytubeapp.utils.Resource
 
 class SongAdapter(
     private val onClickListener: (Song) -> Unit,
-    private val onPLayClickListener: (Song) -> Unit
+    private val onPlayClickListener: (Song) -> Unit,
+    private val onFavoriteClickListener: (Song) -> Unit,
 ) : ListAdapter<Song, SongAdapter.SongViewHolder>(SongDiffCallback()) {
 
     private var lastSelectedPosition = RecyclerView.NO_POSITION
@@ -61,100 +62,37 @@ class SongAdapter(
 
     inner class SongViewHolder(private val binding: ItemSongBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private var isFavorite = false
 
-        private fun isSongIdInList(songIdToCheck: Int, songList: List<Song>): Boolean {
-            for (song in songList) {
-                if (song.id == songIdToCheck) {
-                    return true // El ID de la canción se encontró en la lista
-                }
-            }
-            return false // El ID de la canción no se encontró en la lista
-        }
-
-        fun bind(song: Song) {
-            binding.textViewTitle.text = song.title
-            binding.textViewAuthor.text = song.author
-
-            val songList = MyTube.userPreferences.getUser()?.listSongFavs ?: emptyList()
-
-            if (isSongIdInList(song.id, songList)) {
-                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
-            } else {
-                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
-            }
-
-            binding.imageViewFavorite.setOnClickListener {
-
-                isFavorite = !isFavorite // Cambiar el estado
-
-                if (isFavorite) {
-
-                    val userId = MyTube.userPreferences.getUser()?.id
-                    if (userId != null) {
-                        binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
-                        viewModel.onCreateFavorite(userId ,song.id)
-                        val listSongFavs = MyTube.userPreferences.loadFavoriteSongs()
-                        val listaActualizada = listSongFavs.toMutableList()
-                        listaActualizada.add(song)
-                        MyTube.userPreferences.saveFavoriteSongs(listaActualizada)
-                    }
-
-                } else {
-
-                    val userId = MyTube.userPreferences.getUser()?.id
-                    if (userId != null) {
-                        binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
-                        viewModel.onDeleteFavorite(userId ,song.id)
-                        val listSongFavs = MyTube.userPreferences.loadFavoriteSongs()
-                        val listaActualizada = listSongFavs.filter { it.id != song.id }
-                        MyTube.userPreferences.saveFavoriteSongs(listaActualizada)
-                    }
-                }
-            }
-
-            binding.imageViewPlay.setOnClickListener {
-                val youtubeUrl = song.url
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
-                intent.setPackage("com.android.chrome")
-                try {
-                    itemView.context.startActivity(intent)
-                    val idUser=MyTube.userPreferences.getUser()?.id
-                    if (idUser != null) {
-                        viewModel.onUpdateViews(idUser,song.id)
-                    }
-                } catch (e: ActivityNotFoundException) {
-                    Toast.makeText(itemView.context, "No hay navegadores web instalados.", Toast.LENGTH_SHORT).show()
-                }
-        fun bind(song: Song) {
-            binding.textViewTitle.text = song.title
-            binding.textViewAuthor.text = song.author
-
-            if (song.views != null) {
+            fun bind(song: Song) {
+                binding.textViewTitle.text = song.title
+                binding.textViewAuthor.text = song.author
                 binding.textViewViews.text = song.views.toString()
-            }
 
-            if (song.favorite==1) {
-                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
-            } else {
-                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
-            }
+                if (song.favorite == 1) {
+                    binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
+                } else {
+                    binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
+                }
 
-            binding.imageViewPlay.setOnClickListener {
-                onPLayClickListener(song)
+                binding.imageViewPlay.setOnClickListener {
+                    onPlayClickListener(song)
+                }
+
+                binding.imageViewFavorite.setOnClickListener {
+                    onFavoriteClickListener(song)
+                }
             }
         }
     }
-}
 
-class SongDiffCallback : DiffUtil.ItemCallback<Song>() {
+    class SongDiffCallback : DiffUtil.ItemCallback<Song>() {
 
-    override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-        return oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
+            return (oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.url == newItem.url)
+        }
+
     }
-
-    override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
-        return (oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.url == newItem.url)
-    }
-
-}
