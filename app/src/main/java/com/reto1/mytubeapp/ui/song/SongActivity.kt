@@ -1,13 +1,19 @@
 package com.reto1.mytubeapp.ui.song
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +26,6 @@ import com.reto1.mytubeapp.databinding.SongActivityBinding
 import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
-
     private val SONG_CHANGES_CODE = 1
     private lateinit var songAdapter: SongAdapter
     private val songRepository = RemoteSongDataSource()
@@ -46,7 +51,10 @@ class SongActivity : AppCompatActivity() {
             return input.substring(0, 1).uppercase(Locale.ROOT) + input.substring(1)
         }
 
-        songAdapter = SongAdapter(::onSongListClickItem,viewModel)
+        songAdapter = SongAdapter(
+            ::onSongListClickItem,
+            ::onPlayClickListener
+        )
         binding.songsList.adapter = songAdapter
 
         setSupportActionBar(binding.toolbarSongActivity)
@@ -90,6 +98,7 @@ class SongActivity : AppCompatActivity() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     viewModel.updateSongList()
+
                 }
 
                 Resource.Status.ERROR -> {
@@ -149,6 +158,7 @@ class SongActivity : AppCompatActivity() {
         viewModel.updatedViews.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
+                    Log.i("ViewModel","UPDATED")
                     viewModel.updateSongList()
                 }
 
@@ -161,6 +171,23 @@ class SongActivity : AppCompatActivity() {
                 }
             }
         }
+        viewModel.insertedViews.observe(this) {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
+                    Log.i("ViewModel","UPDATED")
+                    viewModel.updateSongList()
+                }
+
+                Resource.Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                }
+
+                Resource.Status.LOADING -> {
+                    // de momento
+                }
+            }
+        }
+
 
         binding.toolbarSongActivity.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -300,4 +327,30 @@ class SongActivity : AppCompatActivity() {
 
     }
 
+    fun onPlayClickListener(song: Song) {
+        val youtubeUrl = song.url
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+        intent.setPackage("com.android.chrome")
+        try {
+            var idUser = MyTube.userPreferences.getUser()?.id
+            if (idUser != null && song.views > 0) {
+                viewModel.onUpdateViews(idUser, song.id)
+                startActivity(intent)
+
+            }else if (idUser != null && song.views == 0){
+                viewModel.onInsertViews(idUser, song.id)
+                startActivity(intent)
+
+            }else{
+                startActivity(intent)
+            }
+
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(
+                this,
+                "No hay navegadores web instalados.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 }

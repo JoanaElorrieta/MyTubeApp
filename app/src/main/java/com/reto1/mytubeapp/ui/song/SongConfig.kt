@@ -21,7 +21,7 @@ class SongConfig : AppCompatActivity() {
 
     private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
 
-    private var song = Song("", "", "")
+    private lateinit var song: Song
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ConfigSongBinding.inflate(layoutInflater)
@@ -39,7 +39,7 @@ class SongConfig : AppCompatActivity() {
 
         }
 
-        songAdapter = SongAdapter(::onEmployeesListClickItem,viewModel)
+        songAdapter = SongAdapter(::onEmployeesListClickItem, ::onPlayClickListener)
 
         binding.songsList.adapter = songAdapter
 
@@ -231,6 +231,10 @@ class SongConfig : AppCompatActivity() {
                 else -> false // Manejo predeterminado para otros elementos
             }
         }
+
+    }
+
+    fun onPlayClickListener(song: Song) {
 
     }
 }

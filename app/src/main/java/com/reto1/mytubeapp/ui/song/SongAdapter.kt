@@ -7,17 +7,20 @@ import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.reto1.mytubeapp.MyTube
+import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.databinding.ItemSongBinding
+import com.reto1.mytubeapp.utils.Resource
 
 class SongAdapter(
     private val onClickListener: (Song) -> Unit,
-    private val viewModel: SongViewModel
+    private val onPLayClickListener: (Song) -> Unit
 ) : ListAdapter<Song, SongAdapter.SongViewHolder>(SongDiffCallback()) {
 
     private var lastSelectedPosition = RecyclerView.NO_POSITION
@@ -123,19 +126,35 @@ class SongAdapter(
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(itemView.context, "No hay navegadores web instalados.", Toast.LENGTH_SHORT).show()
                 }
+        fun bind(song: Song) {
+            binding.textViewTitle.text = song.title
+            binding.textViewAuthor.text = song.author
+
+            if (song.views != null) {
+                binding.textViewViews.text = song.views.toString()
+            }
+
+            if (song.favorite==1) {
+                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                binding.imageViewFavorite.setImageResource(android.R.drawable.star_big_off)
+            }
+
+            binding.imageViewPlay.setOnClickListener {
+                onPLayClickListener(song)
             }
         }
     }
+}
 
-    class SongDiffCallback : DiffUtil.ItemCallback<Song>() {
+class SongDiffCallback : DiffUtil.ItemCallback<Song>() {
 
-        override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return (oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.url == newItem.url)
-        }
-
+    override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
+        return oldItem.id == newItem.id
     }
+
+    override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
+        return (oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.url == newItem.url)
+    }
+
 }

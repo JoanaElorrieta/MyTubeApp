@@ -33,6 +33,8 @@ class SongViewModel(
 
     private val _updatedViews = MutableLiveData<Resource<Void>>()
     val updatedViews : LiveData<Resource<Void>> get() = _updatedViews
+    private val _insertedViews= MutableLiveData<Resource<Void>>()
+    val insertedViews : LiveData<Resource<Void>> get() = _insertedViews
 
     private val _updatedFavorites = MutableLiveData<Resource<Void>>()
 
@@ -46,21 +48,28 @@ class SongViewModel(
     fun updateSongList() {
         viewModelScope.launch {
             _items.value = getSongsFromRepository()
+
         }
     }
     private suspend fun getSongsFromRepository() : Resource<List<Song>> {
         return withContext(Dispatchers.IO) {
-            songRepository.getSongs()
+            var userId=MyTube.userPreferences.getUser()?.id
+            if (userId != null) {
+                Log.i("ViewModel","HOLa")
+                songRepository.getSongsFavoriteViews(userId)
+            }else{
+                songRepository.getSongs()
+            }
         }
     }
     fun onAddSong(title: String, author: String, url:String) {
-        val song = Song(title, author, url)
+        val song = Song(0,title, author, url,0,0)
         viewModelScope.launch {
             _created.value = createSong(song)
         }
     }
     fun onUpdateSong(id: Int, title: String, author: String, url:String) {
-        val song = Song(title, author, url)
+        val song = Song(0,title, author, url,0,0)
         viewModelScope.launch {
             _updated.value = updateSong(id,song)
         }
@@ -119,6 +128,16 @@ class SongViewModel(
         }
     }
 
+    fun onInsertViews(idUser: Int, idSong:Int) {
+        viewModelScope.launch {
+            _insertedViews.value = insertViews(idUser,idSong)
+        }
+    }
+    private suspend fun insertViews(idUser: Int, idSong:Int): Resource<Void> {
+        return withContext(Dispatchers.IO) {
+            songRepository.insertNumberViews(idUser,idSong)
+        }
+    }
 }
 
 class SongViewModelFactory(

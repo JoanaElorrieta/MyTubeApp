@@ -44,8 +44,9 @@
                 android:id="@+id/titulo"
                 android:layout_width="233dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center|left"
                 android:text="@string/listado_de_canciones"
+                android:textColor="#ECE4E4"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
