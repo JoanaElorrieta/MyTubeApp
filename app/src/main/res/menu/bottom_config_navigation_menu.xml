@@ -16,7 +16,7 @@
         android:id="@+id/logOut"
         android:enabled="true"
         android:icon="@drawable/logout"
-        android:title="@string/logOut"/>
+        android:title="@string/cerrar_sesi_n"/>
 
     <item
         android:id="@+id/edit"

@@ -39,4 +39,6 @@
     <string name="forgot">¿Has olvidado la contraseña?/Actualizar contraseña</string>
     <string name="autor">Autor</string>
     <string name="filtrado_por_autor">Filtrado por Autor</string>
+    <string name="ocultar_filtro">Ocultar Filtro</string>
+    <string name="cerrar_sesi_n">Cerrar Sesión</string>
 </resources>

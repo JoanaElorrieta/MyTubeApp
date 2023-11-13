@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.reto1.mytubeapp.MainActivity
 import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
@@ -161,6 +162,20 @@ class SongActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.HideFilter -> {
+                    binding.textViewFilter.visibility = View.INVISIBLE
+                    binding.editTextFilter.visibility = View.INVISIBLE
+
+                    if (binding.titulo.text == "Listado de canciones") {
+                        songAdapter.submitList(viewModel.items.value?.data)
+                    }else {
+                        songAdapter.filtrarFavoritas(viewModel.items.value?.data)
+                    }
+
+                    true
+
+                }
+
                 else -> false // Manejo predeterminado para otros elementos
             }
         }
@@ -195,6 +210,13 @@ class SongActivity : AppCompatActivity() {
 
                     val intent = Intent(this, SongConfig::class.java)
                     startActivityForResult(intent, SONG_CHANGES_CODE)
+                    true
+                }
+
+                R.id.logOut -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                     true
                 }
 
@@ -238,9 +260,7 @@ class SongActivity : AppCompatActivity() {
                 }
             }
             songAdapter.submitList(filteredList)
-
         }
-
     }
 
     private fun changeFilterField(newField: String) {

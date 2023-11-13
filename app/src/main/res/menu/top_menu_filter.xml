@@ -9,4 +9,8 @@
         android:id="@+id/FilterAuthor"
         android:title="@string/filtro_autor" />
 
+    <item
+        android:id="@+id/HideFilter"
+        android:title="@string/ocultar_filtro" />
+
 </menu>

@@ -1,6 +1,8 @@
 package com.reto1.mytubeapp
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
@@ -14,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.lifecycle.Observer
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
@@ -38,7 +41,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         userAdapter = UserAdapter()
-
+        val rememberMeCheckBox: AppCompatCheckBox = findViewById(R.id.rememberMe)
+        rememberMeCheckBox.buttonTintList = ColorStateList.valueOf(Color.RED)
         //espera y muestra login
         handler.postDelayed({ logIn() }, 3000)
 
@@ -51,13 +55,13 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ChangePass::class.java)
             @Suppress("DEPRECATION")
             startActivityForResult(intent, USER_UPDATE_CODE)
+            finish()
         }
         findViewById<Button>(R.id.login).setOnClickListener {
             val email = findViewById<EditText>(R.id.email).text.toString()
             val password = findViewById<EditText>(R.id.password).text.toString()
             if(checkData()){
                viewModel.onSearchUser(email, password)
-
             }
 
         }

@@ -121,15 +121,12 @@
         app:layout_constraintTop_toTopOf="@+id/guidelineInferior"
         app:rippleColor="#B71C1C" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/rememberMe"
         android:layout_width="131dp"
         android:layout_height="37dp"
         android:text="@string/rememberMe"
         android:textAlignment="center"
-        android:textColorHighlight="#B71C1C"
-        android:textColorHint="#B71C1C"
-        android:textColorLink="#B71C1C"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/forgot"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,7 +1,7 @@
 package com.reto1.mytubeapp.ui.user
 
-
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
@@ -11,24 +11,24 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.reto1.mytubeapp.R
-import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
+import com.reto1.mytubeapp.databinding.RegisterActivityBinding
+import com.reto1.mytubeapp.databinding.SongActivityBinding
 import com.reto1.mytubeapp.utils.Resource
 import java.util.regex.Pattern
-
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
     private lateinit var user: User
-
+    private lateinit var binding: RegisterActivityBinding
     private val viewModel: UserViewModel by viewModels { UserViewModelFactory(userRepository) }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.register_activity)
+        binding = RegisterActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         userAdapter = UserAdapter()
 
@@ -56,13 +56,12 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
         findViewById<Button>(R.id.register).setOnClickListener {
-            var userNuevo = checkData()
+            val userNuevo = checkData()
             if (userNuevo != null) {
                 user = userNuevo
                 viewModel.onCreateUser(userNuevo)
             }
         }
-
 
     }
 
@@ -74,8 +73,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     //Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
-//Formato correcto lo pasa, si no lo pasa como null
-    fun checkData(): User? {
+    //Formato correcto lo pasa, si no lo pasa como null
+    private fun checkData(): User? {
         val email = findViewById<EditText>(R.id.email).text.toString()
         val name = findViewById<EditText>(R.id.name).text.toString()
         val surname = findViewById<EditText>(R.id.surname).text.toString()
@@ -84,11 +83,21 @@ class RegisterActivity : AppCompatActivity() {
 
         if (email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || password2.isEmpty()) {
             Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
+            binding.email.setHintTextColor(Color.RED)
+            binding.name.setHintTextColor(Color.RED)
+            binding.surname.setHintTextColor(Color.RED)
+            binding.password.setHintTextColor(Color.RED)
+            binding.password2.setHintTextColor(Color.RED)
             return null
         }
         val emailCorrecto = validarEmail(email)
         if (!emailCorrecto) {
             Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
+            binding.email.setTextColor(Color.RED)
+            binding.name.setHintTextColor(Color.BLACK)
+            binding.surname.setHintTextColor(Color.BLACK)
+            binding.password.setHintTextColor(Color.BLACK)
+            binding.password2.setHintTextColor(Color.BLACK)
             return null
         }
 
@@ -101,10 +110,20 @@ class RegisterActivity : AppCompatActivity() {
                     "La contraseña debe tener 8 caracteres o más",
                     Toast.LENGTH_LONG
                 ).show()
+                binding.email.setTextColor(Color.BLACK)
+                binding.name.setTextColor(Color.BLACK)
+                binding.surname.setTextColor(Color.BLACK)
+                binding.password.setTextColor(Color.RED)
+                binding.password2.setTextColor(Color.BLACK)
                 return null
             }
         } else {
             Toast.makeText(this, "Las dos contraseñas no coinciden", Toast.LENGTH_LONG).show()
+            binding.email.setTextColor(Color.BLACK)
+            binding.name.setTextColor(Color.BLACK)
+            binding.surname.setTextColor(Color.BLACK)
+            binding.password.setTextColor(Color.RED)
+            binding.password2.setTextColor(Color.RED)
             return null
         }
     }
