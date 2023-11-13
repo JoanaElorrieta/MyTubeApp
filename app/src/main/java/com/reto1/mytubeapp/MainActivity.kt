@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Handler
 import android.util.Log
 import android.util.Patterns
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,6 +28,7 @@ import com.reto1.mytubeapp.ui.user.UserAdapter
 import com.reto1.mytubeapp.ui.user.UserViewModel
 import com.reto1.mytubeapp.ui.user.UserViewModelFactory
 import com.reto1.mytubeapp.utils.Resource
+import java.util.Locale
 import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
@@ -35,17 +37,23 @@ class MainActivity : AppCompatActivity() {
     private val USER_UPDATE_CODE = 2
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
+    private lateinit var rememberMeCheckBox: AppCompatCheckBox
 
     private val viewModel: UserViewModel by viewModels { UserViewModelFactory(userRepository) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         userAdapter = UserAdapter()
-        val rememberMeCheckBox: AppCompatCheckBox = findViewById(R.id.rememberMe)
+        Log.i("checkbox",""+MyTube.userPreferences.getUser())
+        rememberMeCheckBox= findViewById(R.id.rememberMe)
         rememberMeCheckBox.buttonTintList = ColorStateList.valueOf(Color.RED)
         //espera y muestra login
         handler.postDelayed({ logIn() }, 3000)
+        //si tiene user guardado en rememberme precarga user
 
+        if(MyTube.userPreferences.getUser()!=null){
+            findViewById<TextView>(R.id.email).text= MyTube.userPreferences.getUser()!!.email
+        }
         findViewById<Button>(R.id.register).setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             @Suppress("DEPRECATION")
@@ -58,7 +66,10 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
         findViewById<Button>(R.id.login).setOnClickListener {
-            val email = findViewById<EditText>(R.id.email).text.toString()
+            var email = findViewById<EditText>(R.id.email).text.toString()
+            if (email!=null){
+               email= lowerCaseEmail(email)
+            }
             val password = findViewById<EditText>(R.id.password).text.toString()
             if(checkData()){
                viewModel.onSearchUser(email, password)
@@ -101,8 +112,13 @@ class MainActivity : AppCompatActivity() {
                     val userResource = viewModel.user.value
                     if (userResource != null && userResource.status == Resource.Status.SUCCESS) {
                         val user = userResource.data
-                        if (user != null) {
+                        Log.i("checkbox", ""+rememberMeCheckBox.isChecked)
+                        if (user != null && rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
+                            MyTube.userPreferences.saveRememberMeState(rememberMeCheckBox.isChecked)
+                        }else if(user != null && !rememberMeCheckBox.isChecked){
+                            MyTube.userPreferences.saveUser(user)
+                            MyTube.userPreferences.saveRememberMeState(false)
                         }
                     }
                     val intent = Intent(this, SongActivity::class.java)
@@ -187,5 +203,7 @@ class MainActivity : AppCompatActivity() {
 
         return pattern.matcher(email).matches()
     }
-
+    private fun lowerCaseEmail(input: String): String {
+        return input.lowercase(Locale.ROOT)
+    }
 }

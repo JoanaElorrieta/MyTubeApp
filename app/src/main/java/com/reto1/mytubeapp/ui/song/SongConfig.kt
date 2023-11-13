@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.reto1.mytubeapp.MainActivity
+import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
@@ -40,7 +41,11 @@ class SongConfig : AppCompatActivity() {
 
         }
 
-        songAdapter = SongAdapter(::onEmployeesListClickItem, ::onPlayClickListener, ::onFavoriteClickListener)
+        songAdapter = SongAdapter(
+            ::onEmployeesListClickItem,
+            ::onPlayClickListener,
+            ::onFavoriteClickListener
+        )
 
         binding.songsList.adapter = songAdapter
 
@@ -226,6 +231,9 @@ class SongConfig : AppCompatActivity() {
                 }
 
                 R.id.logOut -> {
+                    if (!MyTube.userPreferences.getRememberMeState()) {
+                        MyTube.userPreferences.removeData()
+                    }
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()

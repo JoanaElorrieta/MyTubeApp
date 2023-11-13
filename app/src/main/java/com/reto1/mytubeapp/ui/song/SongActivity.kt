@@ -214,6 +214,9 @@ class SongActivity : AppCompatActivity() {
                 }
 
                 R.id.logOut -> {
+                    if (!MyTube.userPreferences.getRememberMeState()) {
+                        MyTube.userPreferences.removeData()
+                    }
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
