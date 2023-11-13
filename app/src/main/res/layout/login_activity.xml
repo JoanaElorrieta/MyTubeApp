@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/logoText"
+        android:layout_width="316dp"
+        android:layout_height="140dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineSuperior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mytubelogo_removebg_preview" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textAlignment="viewStart"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/rememberMe"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineSuperior" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="121dp"
+        android:layout_height="46dp"
+        android:backgroundTint="#DD2323"
+        android:text="@string/register"
+        android:textColorHighlight="#DD0000"
+        android:textColorLink="#BF360C"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/notNow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/login"
+        app:layout_constraintTop_toTopOf="@+id/guidelineInferior"
+        app:rippleColor="#B71C1C" />
+
+    <Button
+        android:id="@+id/notNow"
+        android:layout_width="190dp"
+        android:layout_height="43dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/notNow"
+        android:textColor="#373737"
+        android:textColorHighlight="#DD0000"
+        android:textColorLink="#BF360C"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register"
+        app:rippleColor="#B71C1C" />
+
+    <Button
+        android:id="@+id/forgot"
+        android:layout_width="286dp"
+        android:layout_height="53dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/forgot"
+        android:textColor="#373737"
+        android:textColorHighlight="#DD0000"
+        android:textColorLink="#BF360C"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineInferior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rememberMe"
+        app:rippleColor="#B71C1C" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="121dp"
+        android:layout_height="46dp"
+        android:backgroundTint="#DD2323"
+        android:text="@string/login"
+        android:textColorHighlight="#DD0000"
+        android:textColorLink="#BF360C"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/notNow"
+        app:layout_constraintEnd_toStartOf="@+id/register"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineInferior"
+        app:rippleColor="#B71C1C" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/rememberMe"
+        android:layout_width="131dp"
+        android:layout_height="37dp"
+        android:text="@string/rememberMe"
+        android:textAlignment="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/forgot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineSuperior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineInferior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.75"
+        app:layout_constraintTop_toBottomOf="@+id/forgot" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
