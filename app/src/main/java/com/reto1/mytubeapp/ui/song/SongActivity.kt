@@ -20,6 +20,7 @@ import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
 import com.reto1.mytubeapp.utils.Resource
 import com.reto1.mytubeapp.databinding.SongActivityBinding
+import com.reto1.mytubeapp.ui.user.LogInActivity
 import java.util.Locale
 
 class SongActivity : AppCompatActivity() {
@@ -179,50 +180,69 @@ class SongActivity : AppCompatActivity() {
                 else -> false // Manejo predeterminado para otros elementos
             }
         }
-
-        binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.back -> {
-                    finish()
-                    true
-                }
-
-                R.id.favorite -> {
-                    isFavorite = !isFavorite
-
-                    if (!isFavorite) {
-                        binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
-                        item.setIcon(R.drawable.music_note)
-                        item.title = "Canciones"
-                        songAdapter.filtrarFavoritas(null)
-
-                    } else {
-                        binding.titulo.text = "Listado de canciones"
-                        viewModel.updateSongList()
-                        item.setIcon(android.R.drawable.star_big_on)
-                        item.title = "Favoritas"
-
+        if(MyTube.userPreferences.getUser()!=null){
+            binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.back -> {
+                        finish()
+                        true
                     }
-                    true
+
+                    R.id.favorite -> {
+                        isFavorite = !isFavorite
+
+                        if (!isFavorite) {
+                            binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
+                            item.setIcon(R.drawable.music_note)
+                            item.title = "Canciones"
+                            songAdapter.filtrarFavoritas(null)
+
+                        } else {
+                            binding.titulo.text = "Listado de canciones"
+                            viewModel.updateSongList()
+                            item.setIcon(android.R.drawable.star_big_on)
+                            item.title = "Favoritas"
+
+                        }
+                        true
+                    }
+
+                    R.id.configMenu -> {
+
+                        val intent = Intent(this, SongConfig::class.java)
+                        startActivityForResult(intent, SONG_CHANGES_CODE)
+                        true
+                    }
+
+                    R.id.logOut -> {
+                        if (!MyTube.userPreferences.getRememberMeState()) {
+                            MyTube.userPreferences.removeData()
+                        }
+                        val intent = Intent(this, LogInActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                        true
+                    }
+
+                    else -> false // Manejo predeterminado para otros elementos
                 }
+            }
+        }else {
+            binding.bottomMenuSongActivity.menu.removeItem(R.id.favorite)
+            binding.bottomMenuSongActivity.menu.removeItem(R.id.configMenu)
+            binding.bottomMenuSongActivity.menu.removeItem(R.id.logOut)
+            binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.back -> {
+                        finish()
+                        true
+                    }
 
-                R.id.configMenu -> {
-
-                    val intent = Intent(this, SongConfig::class.java)
-                    startActivityForResult(intent, SONG_CHANGES_CODE)
-                    true
+                    else -> false
                 }
-
-                R.id.logOut -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                    true
-                }
-
-                else -> false // Manejo predeterminado para otros elementos
             }
         }
+
 
         binding.editTextFilter.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

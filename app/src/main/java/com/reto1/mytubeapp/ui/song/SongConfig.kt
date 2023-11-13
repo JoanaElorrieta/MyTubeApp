@@ -8,11 +8,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.reto1.mytubeapp.MainActivity
+import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
 import com.reto1.mytubeapp.databinding.ConfigSongBinding
+import com.reto1.mytubeapp.ui.user.LogInActivity
 import com.reto1.mytubeapp.utils.Resource
 
 class SongConfig : AppCompatActivity() {
@@ -30,7 +31,7 @@ class SongConfig : AppCompatActivity() {
 
         var someChanges = false
 
-        fun onEmployeesListClickItem(song: Song) {
+        fun onSongListClickItem(song: Song) {
 
             this.song = song
 
@@ -40,7 +41,11 @@ class SongConfig : AppCompatActivity() {
 
         }
 
-        songAdapter = SongAdapter(::onEmployeesListClickItem, ::onPlayClickListener, ::onFavoriteClickListener)
+        songAdapter = SongAdapter(
+            ::onSongListClickItem,
+            ::onPlayClickListener,
+            ::onFavoriteClickListener
+        )
 
         binding.songsList.adapter = songAdapter
 
@@ -177,9 +182,9 @@ class SongConfig : AppCompatActivity() {
                             binding.songInputAuthor.text.toString() != "" &&
                             binding.songInputUrl.text.toString().matches("^https://.*".toRegex())
                         ) {
-                            if (song.title == binding.songInputTitle.text.toString() &&
-                                song.author == binding.songInputAuthor.text.toString() &&
-                                song.url == binding.songInputUrl.text.toString()
+                            if (song.title != binding.songInputTitle.text.toString() ||
+                                song.author != binding.songInputAuthor.text.toString() ||
+                                song.url != binding.songInputUrl.text.toString()
                             ) {
                                 viewModel.onUpdateSong(
                                     song.id,
@@ -226,7 +231,10 @@ class SongConfig : AppCompatActivity() {
                 }
 
                 R.id.logOut -> {
-                    val intent = Intent(this, MainActivity::class.java)
+                    if (!MyTube.userPreferences.getRememberMeState()) {
+                        MyTube.userPreferences.removeData()
+                    }
+                    val intent = Intent(this, LogInActivity::class.java)
                     startActivity(intent)
                     finish()
                     true

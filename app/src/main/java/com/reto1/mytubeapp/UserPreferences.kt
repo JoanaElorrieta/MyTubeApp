@@ -14,6 +14,7 @@ class UserPreferences() {
     companion object {
         const val USER_TOKEN="user_token"
         const val USER_INFO="user_info"
+        const val REMEMBER_ME = "remember_me"
     }
     fun saveAuthToken(token:String){
         val editor=sharedPreferences.edit()
@@ -39,5 +40,21 @@ class UserPreferences() {
             return gson.fromJson(userJson, User::class.java)
         }
         return null
+    }
+    fun saveRememberMeState(rememberMe: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(REMEMBER_ME, rememberMe)
+        editor.apply()
+    }
+
+    fun getRememberMeState(): Boolean {
+        return sharedPreferences.getBoolean(REMEMBER_ME, false)
+    }
+    fun removeData() {
+        val editor = sharedPreferences.edit()
+        editor.remove("user_token")
+        editor.remove("user_info")
+        editor.putBoolean(REMEMBER_ME, false)
+        editor.apply()
     }
 }
