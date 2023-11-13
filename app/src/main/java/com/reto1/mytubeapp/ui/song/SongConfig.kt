@@ -14,6 +14,7 @@ import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.remote.RemoteSongDataSource
 import com.reto1.mytubeapp.databinding.ConfigSongBinding
+import com.reto1.mytubeapp.ui.user.LogInActivity
 import com.reto1.mytubeapp.utils.Resource
 
 class SongConfig : AppCompatActivity() {
@@ -234,7 +235,7 @@ class SongConfig : AppCompatActivity() {
                     if (!MyTube.userPreferences.getRememberMeState()) {
                         MyTube.userPreferences.removeData()
                     }
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, LogInActivity::class.java)
                     startActivity(intent)
                     finish()
                     true
