@@ -9,12 +9,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.databinding.RegisterActivityBinding
-import com.reto1.mytubeapp.databinding.SongActivityBinding
 import com.reto1.mytubeapp.utils.Resource
 import java.util.regex.Pattern
 
@@ -32,7 +30,7 @@ class RegisterActivity : AppCompatActivity() {
 
         userAdapter = UserAdapter()
 
-        viewModel.created.observe(this, Observer {
+        viewModel.created.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     val resultIntent = Intent()
@@ -50,7 +48,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 }
             }
-        })
+        }
 
         findViewById<Button>(R.id.back).setOnClickListener {
             finish()
@@ -94,6 +92,12 @@ class RegisterActivity : AppCompatActivity() {
         if (!emailCorrecto) {
             Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
             binding.email.setTextColor(Color.RED)
+            binding.name.setTextColor(Color.BLACK)
+            binding.surname.setTextColor(Color.BLACK)
+            binding.password.setTextColor(Color.BLACK)
+            binding.password2.setTextColor(Color.BLACK)
+
+            binding.email.setHintTextColor(Color.BLACK)
             binding.name.setHintTextColor(Color.BLACK)
             binding.surname.setHintTextColor(Color.BLACK)
             binding.password.setHintTextColor(Color.BLACK)
@@ -115,6 +119,12 @@ class RegisterActivity : AppCompatActivity() {
                 binding.surname.setTextColor(Color.BLACK)
                 binding.password.setTextColor(Color.RED)
                 binding.password2.setTextColor(Color.BLACK)
+
+                binding.email.setHintTextColor(Color.BLACK)
+                binding.name.setHintTextColor(Color.BLACK)
+                binding.surname.setHintTextColor(Color.BLACK)
+                binding.password.setHintTextColor(Color.BLACK)
+                binding.password2.setHintTextColor(Color.BLACK)
                 return null
             }
         } else {
@@ -124,6 +134,12 @@ class RegisterActivity : AppCompatActivity() {
             binding.surname.setTextColor(Color.BLACK)
             binding.password.setTextColor(Color.RED)
             binding.password2.setTextColor(Color.RED)
+
+            binding.email.setHintTextColor(Color.BLACK)
+            binding.name.setHintTextColor(Color.BLACK)
+            binding.surname.setHintTextColor(Color.BLACK)
+            binding.password.setHintTextColor(Color.BLACK)
+            binding.password2.setHintTextColor(Color.BLACK)
             return null
         }
     }

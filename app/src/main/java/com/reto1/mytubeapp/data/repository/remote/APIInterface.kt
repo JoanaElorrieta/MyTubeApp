@@ -25,6 +25,10 @@ interface APIInterface {
     suspend fun getSongById(@Path("id") id: Int): Response<Song>
     @GET("/songs/user/{id}")
     suspend fun getSongsFavoriteViews(@Path("id") id: Int): Response<List<Song>>
+    @POST("/songs/{idUser},{idSong}/play")
+    suspend fun insertNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
+    @GET("/songs/{idUser},{idSong}/play")
+    suspend fun selectNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
 
     @GET("/users/{email},{password}")
     suspend fun getUserByMail(@Path("email") email: String, @Path("password") password: String): Response<User>
@@ -36,14 +40,9 @@ interface APIInterface {
     suspend fun updateNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
     @POST("/users/{idUser},{idSong}/favorite")
     suspend fun createFavorite(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
-
     @DELETE("/users/{idUser},{idSong}/favorite")
     suspend fun deleteFavorite(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
 
-    @POST("/songs/{idUser},{idSong}/play")
-    suspend fun insertNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
-    @GET("/songs/{idUser},{idSong}/play")
-    suspend fun selectNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Integer>
     @POST("/auth/signup")
     suspend fun signIn(@Body user:User): Response<Integer>
     @POST("/auth/login")
