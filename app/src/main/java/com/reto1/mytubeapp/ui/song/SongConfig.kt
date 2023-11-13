@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.reto1.mytubeapp.MainActivity
 import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
@@ -32,7 +31,7 @@ class SongConfig : AppCompatActivity() {
 
         var someChanges = false
 
-        fun onEmployeesListClickItem(song: Song) {
+        fun onSongListClickItem(song: Song) {
 
             this.song = song
 
@@ -43,7 +42,7 @@ class SongConfig : AppCompatActivity() {
         }
 
         songAdapter = SongAdapter(
-            ::onEmployeesListClickItem,
+            ::onSongListClickItem,
             ::onPlayClickListener,
             ::onFavoriteClickListener
         )
@@ -183,9 +182,9 @@ class SongConfig : AppCompatActivity() {
                             binding.songInputAuthor.text.toString() != "" &&
                             binding.songInputUrl.text.toString().matches("^https://.*".toRegex())
                         ) {
-                            if (song.title == binding.songInputTitle.text.toString() &&
-                                song.author == binding.songInputAuthor.text.toString() &&
-                                song.url == binding.songInputUrl.text.toString()
+                            if (song.title != binding.songInputTitle.text.toString() ||
+                                song.author != binding.songInputAuthor.text.toString() ||
+                                song.url != binding.songInputUrl.text.toString()
                             ) {
                                 viewModel.onUpdateSong(
                                     song.id,
