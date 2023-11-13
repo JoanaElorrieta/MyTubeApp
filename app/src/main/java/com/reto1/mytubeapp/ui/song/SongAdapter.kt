@@ -1,22 +1,16 @@
 package com.reto1.mytubeapp.ui.song
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.reto1.mytubeapp.MyTube
-import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.databinding.ItemSongBinding
-import com.reto1.mytubeapp.utils.Resource
 
 class SongAdapter(
     private val onClickListener: (Song) -> Unit,
@@ -25,7 +19,6 @@ class SongAdapter(
 ) : ListAdapter<Song, SongAdapter.SongViewHolder>(SongDiffCallback()) {
 
     private var lastSelectedPosition = RecyclerView.NO_POSITION
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val binding =
             ItemSongBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -57,6 +50,19 @@ class SongAdapter(
             notifyItemChanged(previousSelectedPosition)
             notifyItemChanged(lastSelectedPosition)
 
+        }
+    }
+
+    fun filter(listSongs: List<Song>?) {
+        if(listSongs != null) {
+            val filteredSongs = listSongs.filter { it.favorite == 1 }
+            submitList(filteredSongs.toList())
+        }else {
+            val filteredSongs = currentList.filter { it.favorite == 1 }
+            Log.i("Prueba", "Current Before $currentList")
+            Log.i("Prueba", "Filtered $filteredSongs")
+            submitList(filteredSongs.toList())
+            Log.i("Prueba", "Current Before $currentList")
         }
     }
 
@@ -92,7 +98,9 @@ class SongAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return (oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.url == newItem.url)
+            return (oldItem.id == newItem.id && oldItem.title == newItem.title &&
+                    oldItem.author == newItem.author && oldItem.url == newItem.url &&
+                    oldItem.views == newItem.views && oldItem.favorite == newItem.favorite)
         }
 
     }

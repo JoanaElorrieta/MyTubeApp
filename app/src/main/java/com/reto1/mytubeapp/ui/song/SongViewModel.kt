@@ -1,6 +1,5 @@
 package com.reto1.mytubeapp.ui.song
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,9 +20,6 @@ class SongViewModel(
     
     private val _items = MutableLiveData<Resource<List<Song>>>()
     val items : LiveData<Resource<List<Song>>> get() = _items
-
-    private val _items2 = MutableLiveData<Resource<List<Song>>>()
-    val items2 : LiveData<Resource<List<Song>>> get() = _items2
 
     private val _created = MutableLiveData<Resource<Void>>()
     val created : LiveData<Resource<Void>> get() = _created
@@ -53,11 +49,6 @@ class SongViewModel(
         }
     }
 
-    fun updateSongList2() {
-        viewModelScope.launch {
-            _items2.value = getSongsFromRepository()
-        }
-    }
     private suspend fun getSongsFromRepository() : Resource<List<Song>> {
         return withContext(Dispatchers.IO) {
             val userId=MyTube.userPreferences.getUser()?.id
@@ -85,7 +76,6 @@ class SongViewModel(
             _deleted.value = deleteSong(id)
         }
     }
-
     private suspend fun createSong(song: Song): Resource<Void> {
         return withContext(Dispatchers.IO) {
             songRepository.createSong(song)

@@ -24,6 +24,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#CA2020"
         android:elevation="4dp"
+        app:title=" "
         app:layout_collapseMode="pin"
         app:layout_scrollFlags="scroll|enterAlways"
         tools:ignore="MissingConstraints" >

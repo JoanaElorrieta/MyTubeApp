@@ -5,15 +5,11 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,14 +29,13 @@ class SongActivity : AppCompatActivity() {
     private lateinit var song: Song
     private var currentFilterField: String? = null
     private lateinit var binding: SongActivityBinding
-    private var isFavorite = false
+    private var isFavorite = true
 
     @SuppressLint("CutPasteId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = SongActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fun onSongListClickItem(song: Song) {
             this.song = song
         }
@@ -60,65 +55,18 @@ class SongActivity : AppCompatActivity() {
         binding.songsList.adapter = songAdapter
 
         setSupportActionBar(binding.toolbarSongActivity)
-        supportActionBar?.title = ""
 
         viewModel.items.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     if (!it.data.isNullOrEmpty()) {
-                        Log.i("Prueba", "items"+it.data)
                         val songs = it.data
-                        songAdapter.submitList(songs)
+                        if (binding.titulo.text == "Listado de canciones") {
+                            viewModel.updateSongList()
+                        } else {
+                            songAdapter.filter(songs)
+                        }
                     }
-                }
-
-                Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                }
-
-                Resource.Status.LOADING -> {
-                    // de momento
-                }
-            }
-        }
-
-        viewModel.created.observe(this) {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    viewModel.updateSongList()
-                }
-
-                Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                }
-
-                Resource.Status.LOADING -> {
-                    // de momento
-                }
-            }
-        }
-
-        viewModel.updated.observe(this) {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    viewModel.updateSongList()
-
-                }
-
-                Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                }
-
-                Resource.Status.LOADING -> {
-                    // de momento
-                }
-            }
-        }
-
-        viewModel.deleted.observe(this) {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    viewModel.updateSongList()
                 }
 
                 Resource.Status.ERROR -> {
@@ -134,7 +82,6 @@ class SongActivity : AppCompatActivity() {
         viewModel.updatedFavorites.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    Log.i("Prueba", "")
                     viewModel.updateSongList()
                 }
 
@@ -165,7 +112,6 @@ class SongActivity : AppCompatActivity() {
         viewModel.updatedViews.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    Log.i("ViewModel", "UPDATED")
                     viewModel.updateSongList()
                 }
 
@@ -239,6 +185,7 @@ class SongActivity : AppCompatActivity() {
                         binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
                         item.setIcon(R.drawable.music_note)
                         item.title = "Canciones"
+                        songAdapter.filter(null)
 
                     } else {
                         binding.titulo.text = "Listado de canciones"
@@ -263,7 +210,6 @@ class SongActivity : AppCompatActivity() {
 
         binding.editTextFilter.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // No es necesario implementar esto
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -273,7 +219,6 @@ class SongActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // No es necesario implementar esto
             }
         })
 
@@ -281,18 +226,6 @@ class SongActivity : AppCompatActivity() {
         viewModel.items.observe(this) { resource ->
             val songs = resource.data
             songAdapter.submitList(songs)
-        }
-    }
-
-    private fun onFavoriteClickListener(song: Song) {
-
-        val userId = MyTube.userPreferences.getUser()?.id
-
-        if (userId != null) {
-            when (song.favorite) {
-                1 -> viewModel.onDeleteFavorite(userId, song.id)
-                0 -> viewModel.onCreateFavorite(userId, song.id)
-            }
         }
     }
 
@@ -336,12 +269,24 @@ class SongActivity : AppCompatActivity() {
 
     }
 
+    private fun onFavoriteClickListener(song: Song) {
+
+        val userId = MyTube.userPreferences.getUser()?.id
+
+        if (userId != null) {
+            when (song.favorite) {
+                1 -> viewModel.onDeleteFavorite(userId, song.id)
+                0 -> viewModel.onCreateFavorite(userId, song.id)
+            }
+        }
+    }
+
     private fun onPlayClickListener(song: Song) {
         val youtubeUrl = song.url
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
         intent.setPackage("com.android.chrome")
         try {
-            var idUser = MyTube.userPreferences.getUser()?.id
+            val idUser = MyTube.userPreferences.getUser()?.id
             if (idUser != null && song.views > 0) {
                 viewModel.onUpdateViews(idUser, song.id)
                 startActivity(intent)
