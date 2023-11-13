@@ -40,13 +40,6 @@ class SongActivity : AppCompatActivity() {
             this.song = song
         }
 
-        fun capitalizeFirstLetter(input: String?): String? {
-            if (input.isNullOrEmpty()) {
-                return input
-            }
-            return input.substring(0, 1).uppercase(Locale.ROOT) + input.substring(1)
-        }
-
         songAdapter = SongAdapter(
             ::onSongListClickItem,
             ::onPlayClickListener,
@@ -56,21 +49,21 @@ class SongActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbarSongActivity)
 
-        viewModel.items.observe(this) {
-            when (it.status) {
+        viewModel.items.observe(this) { resource ->
+            when (resource.status) {
                 Resource.Status.SUCCESS -> {
-                    if (!it.data.isNullOrEmpty()) {
-                        val songs = it.data
+                    if (!resource.data.isNullOrEmpty()) {
+                        val songs = resource.data
                         if (binding.titulo.text == "Listado de canciones") {
-                            viewModel.updateSongList()
+                            songAdapter.submitList(songs)
                         } else {
-                            songAdapter.filter(songs)
+                            songAdapter.filtrarFavoritas(songs)
                         }
                     }
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -82,6 +75,7 @@ class SongActivity : AppCompatActivity() {
         viewModel.updatedFavorites.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
+                    Log.i("Prueba", "")
                     viewModel.updateSongList()
                 }
 
@@ -185,7 +179,7 @@ class SongActivity : AppCompatActivity() {
                         binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
                         item.setIcon(R.drawable.music_note)
                         item.title = "Canciones"
-                        songAdapter.filter(null)
+                        songAdapter.filtrarFavoritas(null)
 
                     } else {
                         binding.titulo.text = "Listado de canciones"
@@ -213,7 +207,6 @@ class SongActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Cuando cambie el texto, filtra la lista y actualiza el adaptador
                 val searchText = s.toString().trim()
                 filterSongList(searchText)
             }
@@ -222,22 +215,32 @@ class SongActivity : AppCompatActivity() {
             }
         })
 
-        // Observa los cambios en la lista de canciones en el ViewModel y actualiza el adaptador
-        viewModel.items.observe(this) { resource ->
-            val songs = resource.data
-            songAdapter.submitList(songs)
-        }
     }
 
     private fun filterSongList(searchText: String) {
-        val filteredList = viewModel.items.value?.data?.filter { song ->
-            when (currentFilterField ?: "title") {
-                "title" -> song.title.contains(searchText, ignoreCase = true)
-                "author" -> song.author.contains(searchText, ignoreCase = true)
-                else -> false // Filtro no válido
+
+        if (binding.titulo.text == "Listado de canciones") {
+            val filteredList = viewModel.items.value?.data?.filter { song ->
+                when (currentFilterField ?: "title") {
+                    "title" -> song.title.contains(searchText, ignoreCase = true)
+                    "author" -> song.author.contains(searchText, ignoreCase = true)
+                    else -> false // Filtro no válido
+                }
             }
+            songAdapter.submitList(filteredList)
+        }else {
+
+            val filteredList = songAdapter.filtrarFavoritas(viewModel.items.value?.data).filter { song ->
+                when (currentFilterField ?: "title") {
+                    "title" -> song.title.contains(searchText, ignoreCase = true)
+                    "author" -> song.author.contains(searchText, ignoreCase = true)
+                    else -> false // Filtro no válido
+                }
+            }
+            songAdapter.submitList(filteredList)
+
         }
-        songAdapter.submitList(filteredList)
+
     }
 
     private fun changeFilterField(newField: String) {
@@ -248,25 +251,11 @@ class SongActivity : AppCompatActivity() {
         filterSongList(searchText)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_menu_filter,menu)
-        return true
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SONG_CHANGES_CODE && resultCode == RESULT_OK) {
-
-            val someChanges = data?.getBooleanExtra("someChanges", false)
-
-            if (someChanges == true) {
-                viewModel.updateSongList()
-            }
-
+    private fun capitalizeFirstLetter(input: String?): String? {
+        if (input.isNullOrEmpty()) {
+            return input
         }
-
+        return input.substring(0, 1).uppercase(Locale.ROOT) + input.substring(1)
     }
 
     private fun onFavoriteClickListener(song: Song) {
@@ -307,4 +296,26 @@ class SongActivity : AppCompatActivity() {
             ).show()
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_menu_filter,menu)
+        return true
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == SONG_CHANGES_CODE && resultCode == RESULT_OK) {
+
+            val someChanges = data?.getBooleanExtra("someChanges", false)
+
+            if (someChanges == true) {
+                viewModel.updateSongList()
+            }
+
+        }
+
+    }
+
 }

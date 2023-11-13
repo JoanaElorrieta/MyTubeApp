@@ -53,17 +53,19 @@ class SongAdapter(
         }
     }
 
-    fun filter(listSongs: List<Song>?) {
+    fun filtrarFavoritas(listSongs: List<Song>?):List<Song> {
+
+        val filteredSongs: List<Song>?
+
         if(listSongs != null) {
-            val filteredSongs = listSongs.filter { it.favorite == 1 }
+            filteredSongs = listSongs.filter { it.favorite == 1 }
             submitList(filteredSongs.toList())
+
         }else {
-            val filteredSongs = currentList.filter { it.favorite == 1 }
-            Log.i("Prueba", "Current Before $currentList")
-            Log.i("Prueba", "Filtered $filteredSongs")
+            filteredSongs = currentList.filter { it.favorite == 1 }
             submitList(filteredSongs.toList())
-            Log.i("Prueba", "Current Before $currentList")
         }
+        return filteredSongs
     }
 
     inner class SongViewHolder(private val binding: ItemSongBinding) :
