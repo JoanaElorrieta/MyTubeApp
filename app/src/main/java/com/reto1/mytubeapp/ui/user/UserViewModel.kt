@@ -1,13 +1,11 @@
 package com.reto1.mytubeapp.ui.user
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.data.AuthRequest
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.CommonUserRepository
@@ -31,7 +29,7 @@ class UserViewModel(
     private val _user= MutableLiveData<Resource<User>>()
     val user : LiveData<Resource<User>> get() = _user
 
-    suspend fun createUser(user : User) : Resource<Integer> {
+    private suspend fun createUser(user : User) : Resource<Integer> {
         return withContext(Dispatchers.IO) {
             userRepository.signIn(user)
         }
@@ -41,41 +39,39 @@ class UserViewModel(
             _created.value = createUser(user)
         }
     }
-    suspend fun searchUser(email:String, password:String) : Resource<User> {
+    private suspend fun searchUser(email:String, password:String) : Resource<User> {
         return withContext(Dispatchers.IO) {
-            var user= AuthRequest(email,password)
+            val user= AuthRequest(email,password)
             userRepository.login(user)
         }
     }
     fun onSearchUser(email:String, password:String) {
         viewModelScope.launch {
             _found.value = searchUser(email,password)
-            Log.i("Viewmodel", ""+_found.value)
         }
     }
-    suspend fun updateUser(email:String, password:String) : Resource<Void> {
-        return withContext(Dispatchers.IO) {
-            userRepository.updateUser(email, password)
-        }
-    }
-    fun onUpdateUser(email: String, password:String) {
+
+    fun onUpdateUser(email: String, oldPassword: String, password: String) {
         viewModelScope.launch {
-            _update.value = updateUser(email,password)
-            Log.i("ViewModel",""+_update.value)
+            _update.value = updateUser(email, oldPassword, password)
+        }
+    }
+
+    private suspend fun updateUser(email:String, oldPassword:String, password:String) : Resource<Void> {
+        return withContext(Dispatchers.IO) {
+            userRepository.updateUser(email, oldPassword, password)
         }
     }
     fun getUserInfo(accessToken:String){
         viewModelScope.launch {
             _user.value = getInfo(accessToken)
-            Log.i("ViewModel",""+_user.value)
         }
     }
-    suspend fun getInfo(accessToken:String) : Resource<User> {
+    private suspend fun getInfo(accessToken:String) : Resource<User> {
         return withContext(Dispatchers.IO) {
             userRepository.getUserInfo(accessToken)
         }
     }
-
 
 }
 class UserViewModelFactory(

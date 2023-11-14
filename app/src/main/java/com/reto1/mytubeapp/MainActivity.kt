@@ -10,7 +10,6 @@ import com.reto1.mytubeapp.ui.user.LogInActivity
 class MainActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

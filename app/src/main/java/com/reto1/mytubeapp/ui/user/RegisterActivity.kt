@@ -38,12 +38,10 @@ class RegisterActivity : AppCompatActivity() {
                     setResult(RESULT_OK, resultIntent)
                     finish()
                 }
-
                 Resource.Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG)
                         .show()
                 }
-
                 Resource.Status.LOADING -> {
 
                 }
@@ -60,7 +58,6 @@ class RegisterActivity : AppCompatActivity() {
                 viewModel.onCreateUser(userNuevo)
             }
         }
-
     }
 
     //Este metodo valida el patrón de los correos

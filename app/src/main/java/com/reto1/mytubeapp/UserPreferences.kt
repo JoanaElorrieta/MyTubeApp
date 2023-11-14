@@ -3,11 +3,9 @@ package com.reto1.mytubeapp
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.User
 
-class UserPreferences() {
+class UserPreferences {
     private val sharedPreferences: SharedPreferences by lazy{
         MyTube.context.getSharedPreferences(MyTube.context.packageName, Context.MODE_PRIVATE)
     }

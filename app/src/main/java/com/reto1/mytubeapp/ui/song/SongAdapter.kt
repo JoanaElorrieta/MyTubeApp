@@ -1,9 +1,6 @@
 package com.reto1.mytubeapp.ui.song
 
 import android.graphics.Color
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -53,7 +50,7 @@ class SongAdapter(
         }
     }
 
-    fun filtrarFavoritas(listSongs: List<Song>?):List<Song> {
+    fun filtrateFavorites(listSongs: List<Song>?):List<Song> {
 
         val filteredSongs: List<Song>?
 

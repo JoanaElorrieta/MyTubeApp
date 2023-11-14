@@ -34,8 +34,8 @@ interface APIInterface {
     suspend fun getUserByMail(@Path("email") email: String, @Path("password") password: String): Response<User>
     @POST("/users")
     suspend fun createUser(@Body user: User): Response<Void>
-    @PUT("/users/{email},{password}")
-    suspend fun updateUser(@Path("email") email: String, @Path("password") password: String): Response<Void>
+    @PUT("/users/{email},{oldPassword},{password}")
+    suspend fun updateUser(@Path("email") email:String, @Path("oldPassword") oldPassword:String, @Path("password") password:String): Response<Void>
     @PUT("/songs/{idUser},{idSong}/play")
     suspend fun updateNumberViews(@Path("idUser") idUser:Int, @Path("idSong") idSong:Int): Response<Void>
     @POST("/users/{idUser},{idSong}/favorite")

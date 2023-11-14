@@ -1,11 +1,13 @@
 package com.reto1.mytubeapp
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 
 class MyTube : Application() {
     companion object {
+        @SuppressLint("StaticFieldLeak")
         lateinit var context:Context
         lateinit var userPreferences:UserPreferences
     }
@@ -15,11 +17,4 @@ class MyTube : Application() {
        userPreferences=UserPreferences()
    }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-    }
 }

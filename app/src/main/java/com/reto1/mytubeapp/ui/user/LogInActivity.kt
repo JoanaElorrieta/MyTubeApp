@@ -1,5 +1,6 @@
 package com.reto1.mytubeapp.ui.user
 
+import android.annotation.SuppressLint
 import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import android.content.Intent
@@ -15,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.lifecycle.Observer
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.ui.song.SongActivity
@@ -31,13 +31,13 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var rememberMeCheckBox: AppCompatCheckBox
 
     private val viewModel: UserViewModel by viewModels { UserViewModelFactory(userRepository) }
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
         userAdapter = UserAdapter()
         rememberMeCheckBox= findViewById(R.id.rememberMe)
         rememberMeCheckBox.buttonTintList = ColorStateList.valueOf(Color.RED)
-
 
         if(MyTube.userPreferences.getUser()!=null){
             findViewById<TextView>(R.id.email).text= MyTube.userPreferences.getUser()!!.email
@@ -55,9 +55,7 @@ class LogInActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.login).setOnClickListener {
             var email = findViewById<EditText>(R.id.email).text.toString()
-            if (email!=null){
-                email= lowerCaseEmail(email)
-            }
+            email= lowerCaseEmail(email)
             val password = findViewById<EditText>(R.id.password).text.toString()
             if(checkData()){
                 viewModel.onSearchUser(email, password)
@@ -68,43 +66,41 @@ class LogInActivity : AppCompatActivity() {
             val intent = Intent(this, SongActivity::class.java)
             startActivity(intent)
         }
-        viewModel.found.observe(this, Observer {
+        viewModel.found.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    val user=viewModel.found.value
+                    val user = viewModel.found.value
 
                     if (user != null) {
                         val accessToken = user.data?.accessToken
                         Log.i("Login", "" + accessToken)
                         if (accessToken != null) {
                             MyTube.userPreferences.saveAuthToken(accessToken)
-                            viewModel.getUserInfo("Bearer "+accessToken)
+                            viewModel.getUserInfo("Bearer $accessToken")
                         }
                     }
                 }
-
                 Resource.Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG)
                         .show()
                 }
-
                 Resource.Status.LOADING -> {
 
                 }
             }
-        })
+        }
 
-        viewModel.user.observe(this, Observer {
+        viewModel.user.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     val userResource = viewModel.user.value
                     if (userResource != null && userResource.status == Resource.Status.SUCCESS) {
                         val user = userResource.data
-                        Log.i("checkbox", ""+rememberMeCheckBox.isChecked)
+                        Log.i("checkbox", "" + rememberMeCheckBox.isChecked)
                         if (user != null && rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(rememberMeCheckBox.isChecked)
-                        }else if(user != null && !rememberMeCheckBox.isChecked){
+                        } else if (user != null && !rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(false)
                         }
@@ -122,7 +118,7 @@ class LogInActivity : AppCompatActivity() {
 
                 }
             }
-        })
+        }
     }
 
 
@@ -138,7 +134,7 @@ class LogInActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.password).setText(user.password)
             }
         }else if (requestCode == USER_UPDATE_CODE && resultCode == RESULT_OK){
-            var email=data?.getStringExtra("email") ?: ""
+            val email=data?.getStringExtra("email") ?: ""
             val password=data?.getStringExtra("password") ?: ""
             Log.i("ViewModel",""+email)
             findViewById<EditText>(R.id.email).setText(email)
@@ -147,7 +143,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
 
-    fun checkData(): Boolean {
+    private fun checkData(): Boolean {
         val email = findViewById<EditText>(R.id.email).text.toString()
         val password = findViewById<EditText>(R.id.password).text.toString()
 
@@ -160,7 +156,6 @@ class LogInActivity : AppCompatActivity() {
             Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
             return false
         }
-
 
         if (password.length >= 8) {
             return true

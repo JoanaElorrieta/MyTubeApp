@@ -13,7 +13,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.reto1.mytubeapp.MainActivity
 import com.reto1.mytubeapp.MyTube
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.Song
@@ -59,7 +58,7 @@ class SongActivity : AppCompatActivity() {
                         if (binding.titulo.text == "Listado de canciones") {
                             songAdapter.submitList(songs)
                         } else {
-                            songAdapter.filtrarFavoritas(songs)
+                            songAdapter.filtrateFavorites(songs)
                         }
                     }
                 }
@@ -77,7 +76,6 @@ class SongActivity : AppCompatActivity() {
         viewModel.updatedFavorites.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    Log.i("Prueba", "")
                     viewModel.updateSongList()
                 }
 
@@ -170,7 +168,7 @@ class SongActivity : AppCompatActivity() {
                     if (binding.titulo.text == "Listado de canciones") {
                         songAdapter.submitList(viewModel.items.value?.data)
                     }else {
-                        songAdapter.filtrarFavoritas(viewModel.items.value?.data)
+                        songAdapter.filtrateFavorites(viewModel.items.value?.data)
                     }
 
                     true
@@ -195,7 +193,7 @@ class SongActivity : AppCompatActivity() {
                             binding.titulo.text = "Favoritas de " + capitalizeFirstLetter((MyTube.userPreferences.getUser()?.name))
                             item.setIcon(R.drawable.music_note)
                             item.title = "Canciones"
-                            songAdapter.filtrarFavoritas(null)
+                            songAdapter.filtrateFavorites(null)
 
                         } else {
                             binding.titulo.text = "Listado de canciones"
@@ -272,7 +270,7 @@ class SongActivity : AppCompatActivity() {
             songAdapter.submitList(filteredList)
         }else {
 
-            val filteredList = songAdapter.filtrarFavoritas(viewModel.items.value?.data).filter { song ->
+            val filteredList = songAdapter.filtrateFavorites(viewModel.items.value?.data).filter { song ->
                 when (currentFilterField ?: "title") {
                     "title" -> song.title.contains(searchText, ignoreCase = true)
                     "author" -> song.author.contains(searchText, ignoreCase = true)
