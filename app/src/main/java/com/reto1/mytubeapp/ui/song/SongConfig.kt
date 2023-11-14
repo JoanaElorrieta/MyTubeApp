@@ -61,7 +61,7 @@ class SongConfig : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido actualizar la lista", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -78,7 +78,8 @@ class SongConfig : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido crear la canción", Toast.LENGTH_LONG).show()
+
                 }
 
                 Resource.Status.LOADING -> {
@@ -95,7 +96,7 @@ class SongConfig : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido actualizar la canción", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -112,7 +113,7 @@ class SongConfig : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido eliminar la canción", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {

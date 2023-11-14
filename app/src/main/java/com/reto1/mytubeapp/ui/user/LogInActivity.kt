@@ -38,10 +38,15 @@ class LogInActivity : AppCompatActivity() {
         userAdapter = UserAdapter()
         rememberMeCheckBox= findViewById(R.id.rememberMe)
         rememberMeCheckBox.buttonTintList = ColorStateList.valueOf(Color.RED)
-
+        //Pone el checkbox true o false segun lo guardado
+        rememberMeCheckBox.isChecked= MyTube.userPreferences.getRememberMeState()
+        //Pone pass y user si hay uno guardado
         if(MyTube.userPreferences.getUser()!=null){
             findViewById<TextView>(R.id.email).text= MyTube.userPreferences.getUser()!!.email
+            findViewById<TextView>(R.id.password).text= MyTube.userPreferences.getPass()
         }
+
+
         findViewById<Button>(R.id.register).setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             @Suppress("DEPRECATION")
@@ -60,12 +65,8 @@ class LogInActivity : AppCompatActivity() {
             if(checkData()){
                 viewModel.onSearchUser(email, password)
             }
+        }
 
-        }
-        findViewById<Button>(R.id.notNow).setOnClickListener {
-            val intent = Intent(this, SongActivity::class.java)
-            startActivity(intent)
-        }
         viewModel.found.observe(this) {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
@@ -81,7 +82,7 @@ class LogInActivity : AppCompatActivity() {
                     }
                 }
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
+                    Toast.makeText(this, "Los datos introducidos no son correctos", Toast.LENGTH_LONG)
                         .show()
                 }
                 Resource.Status.LOADING -> {
@@ -103,6 +104,7 @@ class LogInActivity : AppCompatActivity() {
                         } else if (user != null && !rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(false)
+                            MyTube.userPreferences.savePass(findViewById<TextView>(R.id.password).text.toString())
                         }
                     }
                     val intent = Intent(this, SongActivity::class.java)
@@ -110,7 +112,7 @@ class LogInActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
+                    Toast.makeText(this, "Los datos introducidos no son correctos", Toast.LENGTH_LONG)
                         .show()
                 }
 

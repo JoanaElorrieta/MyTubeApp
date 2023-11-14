@@ -64,7 +64,7 @@ class SongActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido actualizar el listado", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -80,7 +80,7 @@ class SongActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido actualizar esta canción", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -95,7 +95,7 @@ class SongActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido eliminar esta favorita", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -110,7 +110,7 @@ class SongActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido actualizar el número de visualizaciones", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {
@@ -126,7 +126,7 @@ class SongActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se ha podido actualizar el número de visualizaciones", Toast.LENGTH_LONG).show()
                 }
 
                 Resource.Status.LOADING -> {

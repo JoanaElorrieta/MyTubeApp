@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/forgot"
+        android:layout_width="286dp"
+        android:layout_height="53dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/forgot"
+        android:textColor="#373737"
+        android:textColorHighlight="#DD0000"
+        android:textColorLink="#BF360C"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register"
+        app:rippleColor="#B71C1C" />
+
     <ImageView
         android:id="@+id/logoText"
         android:layout_width="316dp"
@@ -53,46 +70,11 @@
         android:textColorHighlight="#DD0000"
         android:textColorLink="#BF360C"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/notNow"
+        app:layout_constraintBottom_toTopOf="@+id/forgot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/login"
-        app:layout_constraintTop_toTopOf="@+id/guidelineInferior"
-        app:rippleColor="#B71C1C" />
-
-    <Button
-        android:id="@+id/notNow"
-        android:layout_width="190dp"
-        android:layout_height="43dp"
-        android:backgroundTint="@color/white"
-        android:text="@string/notNow"
-        android:textColor="#373737"
-        android:textColorHighlight="#DD0000"
-        android:textColorLink="#BF360C"
-        android:textSize="12sp"
-        android:textStyle="italic"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register"
-        app:rippleColor="#B71C1C" />
-
-    <Button
-        android:id="@+id/forgot"
-        android:layout_width="286dp"
-        android:layout_height="53dp"
-        android:backgroundTint="@color/white"
-        android:text="@string/forgot"
-        android:textColor="#373737"
-        android:textColorHighlight="#DD0000"
-        android:textColorLink="#BF360C"
-        android:textSize="14sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineInferior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rememberMe"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineInferior"
         app:rippleColor="#B71C1C" />
 
     <Button
@@ -104,7 +86,7 @@
         android:textColorHighlight="#DD0000"
         android:textColorLink="#BF360C"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/notNow"
+        app:layout_constraintBottom_toTopOf="@+id/forgot"
         app:layout_constraintEnd_toStartOf="@+id/register"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +100,7 @@
         android:text="@string/rememberMe"
         android:textAlignment="center"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/forgot"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineInferior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -129,7 +111,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.25"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -137,8 +122,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_percent="0.75"
-        app:layout_constraintTop_toBottomOf="@+id/forgot" />
+        app:layout_constraintBottom_toTopOf="@+id/register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rememberMe" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
