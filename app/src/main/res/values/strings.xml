@@ -41,4 +41,9 @@
     <string name="filtrado_por_autor">Filtrado por Autor</string>
     <string name="ocultar_filtro">Ocultar Filtro</string>
     <string name="cerrar_sesi_n">Cerrar Sesión</string>
+    <string name="icono_de_la_aplicaci_n">Icono de la aplicación</string>
+    <string name="boton_de_reproducci_n">Boton de reproducción</string>
+    <string name="boton_de_favoritos">Boton de favoritos</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
 </resources>

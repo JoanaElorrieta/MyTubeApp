@@ -4,12 +4,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.databinding.RegisterActivityBinding
@@ -39,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
                     finish()
                 }
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
+                    Toast.makeText(this, "No se ha podido crear el usuario", Toast.LENGTH_LONG)
                         .show()
                 }
                 Resource.Status.LOADING -> {
@@ -48,10 +45,10 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<Button>(R.id.back).setOnClickListener {
+        binding.back.setOnClickListener {
             finish()
         }
-        findViewById<Button>(R.id.register).setOnClickListener {
+        binding.register.setOnClickListener {
             val userNuevo = checkData()
             if (userNuevo != null) {
                 user = userNuevo
@@ -70,11 +67,11 @@ class RegisterActivity : AppCompatActivity() {
     //Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
     //Formato correcto lo pasa, si no lo pasa como null
     private fun checkData(): User? {
-        val email = findViewById<EditText>(R.id.email).text.toString()
-        val name = findViewById<EditText>(R.id.name).text.toString()
-        val surname = findViewById<EditText>(R.id.surname).text.toString()
-        val password = findViewById<EditText>(R.id.password).text.toString()
-        val password2 = findViewById<EditText>(R.id.password2).text.toString()
+        val email = binding.email.text.toString()
+        val name = binding.name.text.toString()
+        val surname = binding.surname.text.toString()
+        val password = binding.password.text.toString()
+        val password2 = binding.password2.text.toString()
 
         if (email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || password2.isEmpty()) {
             Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()

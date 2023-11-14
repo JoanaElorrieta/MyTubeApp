@@ -33,13 +33,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <!-- Icono -->
             <ImageView
                 android:layout_width="58dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/free_youtube_logo_icon_2431_thumb" />
+                android:src="@drawable/free_youtube_logo_icon_2431_thumb"
+                android:contentDescription="@string/icono_de_la_aplicaci_n" />
 
             <TextView
                 android:id="@+id/titulo"
@@ -49,7 +51,8 @@
                 android:text="@string/listado_de_canciones"
                 android:textColor="#ECE4E4"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded,TextSizeCheck" />
 
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -68,7 +71,9 @@
         app:layout_constraintBottom_toTopOf="@+id/songs_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFilter" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewFilter"
+        android:autofillHints=""
+        tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/textViewFilter"
@@ -90,6 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu_song_activity" />
+        app:menu="@menu/bottom_menu_song_activity"
+        tools:ignore="VisualLintBottomNav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

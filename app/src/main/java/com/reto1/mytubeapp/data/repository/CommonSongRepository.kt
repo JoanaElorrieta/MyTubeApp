@@ -1,7 +1,6 @@
 package com.reto1.mytubeapp.data.repository
 
 import com.reto1.mytubeapp.data.Song
-import com.reto1.mytubeapp.data.repository.remote.RetrofitClient
 import com.reto1.mytubeapp.utils.Resource
 
 interface CommonSongRepository {

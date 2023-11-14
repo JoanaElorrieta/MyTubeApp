@@ -13,14 +13,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         //espera y muestra login
         handler.postDelayed({ logIn() }, 3000)
-
     }
 
     private fun logIn() {
-       val intent=Intent(this, LogInActivity::class.java)
+       val intent = Intent(this, LogInActivity::class.java)
         startActivity(intent)
         finish()
     }

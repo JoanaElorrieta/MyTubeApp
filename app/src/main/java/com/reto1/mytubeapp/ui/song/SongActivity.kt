@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
@@ -47,7 +46,6 @@ class SongActivity : AppCompatActivity() {
             ::onFavoriteClickListener
         )
         binding.songsList.adapter = songAdapter
-
         setSupportActionBar(binding.toolbarSongActivity)
 
         viewModel.items.observe(this) { resource ->
@@ -181,10 +179,6 @@ class SongActivity : AppCompatActivity() {
         if(MyTube.userPreferences.getUser()!=null){
             binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
                 when (item.itemId) {
-                    R.id.back -> {
-                        finish()
-                        true
-                    }
 
                     R.id.favorite -> {
                         isFavorite = !isFavorite
@@ -225,22 +219,7 @@ class SongActivity : AppCompatActivity() {
                     else -> false // Manejo predeterminado para otros elementos
                 }
             }
-        }else {
-            binding.bottomMenuSongActivity.menu.removeItem(R.id.favorite)
-            binding.bottomMenuSongActivity.menu.removeItem(R.id.configMenu)
-            binding.bottomMenuSongActivity.menu.removeItem(R.id.logOut)
-            binding.bottomMenuSongActivity.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.back -> {
-                        finish()
-                        true
-                    }
-
-                    else -> false
-                }
-            }
         }
-
 
         binding.editTextFilter.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

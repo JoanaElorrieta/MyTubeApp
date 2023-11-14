@@ -36,7 +36,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#00FFFFFF"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        app:srcCompat="@android:drawable/ic_media_play"
+        android:contentDescription="@string/boton_de_reproducci_n" />
 
     <ImageButton
         android:id="@+id/imageViewFavorite"
@@ -44,6 +45,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#00FFFFFF"
-        app:srcCompat="@android:drawable/star_big_on" />
+        app:srcCompat="@android:drawable/star_big_on"
+        android:contentDescription="@string/boton_de_favoritos" />
 
 </LinearLayout>

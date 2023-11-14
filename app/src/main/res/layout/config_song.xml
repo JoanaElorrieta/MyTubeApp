@@ -16,7 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb" />
+        app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb"
+        android:contentDescription="@string/icono_de_la_aplicaci_n" />
 
     <TextView
         android:id="@+id/textViewMain"
@@ -30,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.031" />
+        tools:ignore="TextSizeCheck" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -47,40 +48,49 @@
             android:id="@+id/song_input_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:hint="@string/input_title"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@+id/song_input_url"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/songInputUrl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/song_input_author" />
+            app:layout_constraintTop_toBottomOf="@+id/song_input_author"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
             android:id="@+id/song_input_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:hint="@string/input_author"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:minHeight="48dp"
             app:layout_constraintBottom_toTopOf="@+id/song_input_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <EditText
-            android:id="@+id/song_input_url"
+            android:id="@+id/songInputUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:hint="@string/input_url"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:minHeight="48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/song_input_title" />
+            app:layout_constraintTop_toBottomOf="@+id/song_input_title"
+            tools:ignore="TextFields,VisualLintTextFieldSize" />
 
     </LinearLayout>
 
@@ -100,7 +110,8 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_config_navigation_menu" />
+        app:menu="@menu/bottom_config_navigation_menu"
+        tools:ignore="VisualLintBottomNav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

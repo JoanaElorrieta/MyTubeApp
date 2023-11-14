@@ -10,13 +10,13 @@ class UserPreferences {
         MyTube.context.getSharedPreferences(MyTube.context.packageName, Context.MODE_PRIVATE)
     }
     companion object {
-        const val USER_TOKEN="user_token"
-        const val USER_INFO="user_info"
+        const val USER_TOKEN = "user_token"
+        const val USER_INFO = "user_info"
         const val REMEMBER_ME = "remember_me"
         const val PASS = "pass"
     }
     fun saveAuthToken(token:String){
-        val editor=sharedPreferences.edit()
+        val editor = sharedPreferences.edit()
         editor.putString(USER_TOKEN, token)
         editor.apply()
     }
@@ -57,7 +57,7 @@ class UserPreferences {
         editor.apply()
     }
     fun savePass(pass: String) {
-        val editor=sharedPreferences.edit()
+        val editor = sharedPreferences.edit()
         editor.putString(PASS, pass)
         editor.apply()
     }

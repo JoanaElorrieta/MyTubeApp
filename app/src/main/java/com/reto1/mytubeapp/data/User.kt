@@ -25,16 +25,5 @@ data class User(
         password = password,
         accessToken=""
     )
-    constructor(
-        email: String,
-        accessToken:String
-    ) : this(
-        id = 0, // valor por defecto
-        name = "",
-        lastName = "",
-        email = email,
-        password = "",
-        accessToken=accessToken
-    )
 
 }

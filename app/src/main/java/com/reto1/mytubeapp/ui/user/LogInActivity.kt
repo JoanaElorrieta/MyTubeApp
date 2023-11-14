@@ -18,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatCheckBox
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
+import com.reto1.mytubeapp.databinding.LoginActivityBinding
 import com.reto1.mytubeapp.ui.song.SongActivity
 import com.reto1.mytubeapp.utils.Resource
 import java.util.Locale
@@ -29,12 +30,14 @@ class LogInActivity : AppCompatActivity() {
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
     private lateinit var rememberMeCheckBox: AppCompatCheckBox
+    private lateinit var binding: LoginActivityBinding
 
     private val viewModel: UserViewModel by viewModels { UserViewModelFactory(userRepository) }
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_activity)
+        binding = LoginActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         userAdapter = UserAdapter()
         rememberMeCheckBox= findViewById(R.id.rememberMe)
         rememberMeCheckBox.buttonTintList = ColorStateList.valueOf(Color.RED)
@@ -101,29 +104,25 @@ class LogInActivity : AppCompatActivity() {
                         if (user != null && rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(rememberMeCheckBox.isChecked)
+                            MyTube.userPreferences.savePass(findViewById<TextView>(R.id.password).text.toString())
                         } else if (user != null && !rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(false)
-                            MyTube.userPreferences.savePass(findViewById<TextView>(R.id.password).text.toString())
                         }
                     }
                     val intent = Intent(this, SongActivity::class.java)
                     startActivity(intent)
                 }
-
                 Resource.Status.ERROR -> {
                     Toast.makeText(this, "Los datos introducidos no son correctos", Toast.LENGTH_LONG)
                         .show()
                 }
-
                 Resource.Status.LOADING -> {
 
                 }
             }
         }
     }
-
-
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -144,18 +143,24 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
-
     private fun checkData(): Boolean {
         val email = findViewById<EditText>(R.id.email).text.toString()
         val password = findViewById<EditText>(R.id.password).text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
+            binding.email.setHintTextColor(Color.RED)
+            binding.password.setHintTextColor(Color.RED)
             return false
         }
         val emailCorrecto = validarEmail(email)
         if (!emailCorrecto) {
             Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
+            binding.email.setTextColor(Color.RED)
+            binding.password.setTextColor(Color.BLACK)
+
+            binding.email.setHintTextColor(Color.BLACK)
+            binding.password.setHintTextColor(Color.BLACK)
             return false
         }
 
@@ -167,6 +172,11 @@ class LogInActivity : AppCompatActivity() {
                 "La contraseña debe tener 8 caracteres o más",
                 Toast.LENGTH_LONG
             ).show()
+            binding.email.setTextColor(Color.BLACK)
+            binding.password.setTextColor(Color.RED)
+
+            binding.email.setHintTextColor(Color.BLACK)
+            binding.password.setHintTextColor(Color.BLACK)
             return false
         }
 
@@ -174,7 +184,6 @@ class LogInActivity : AppCompatActivity() {
 
     private fun validarEmail(email: String): Boolean {
         val pattern: Pattern = Patterns.EMAIL_ADDRESS
-
         return pattern.matcher(email).matches()
     }
     private fun lowerCaseEmail(input: String): String {

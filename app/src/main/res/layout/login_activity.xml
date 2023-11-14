@@ -32,16 +32,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mytubelogo_removebg_preview" />
+        app:srcCompat="@drawable/mytubelogo_removebg_preview"
+        android:contentDescription="@string/icono_de_la_aplicaci_n" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         android:textAlignment="viewStart"
+        android:textColorHint="#8D6E63"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/rememberMe"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,9 +56,12 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:textColorHint="#8D6E63"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +71,7 @@
     <Button
         android:id="@+id/register"
         android:layout_width="121dp"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:backgroundTint="#DD2323"
         android:text="@string/register"
         android:textColorHighlight="#DD0000"
@@ -80,7 +87,7 @@
     <Button
         android:id="@+id/login"
         android:layout_width="121dp"
-        android:layout_height="46dp"
+        android:layout_height="48dp"
         android:backgroundTint="#DD2323"
         android:text="@string/login"
         android:textColorHighlight="#DD0000"
@@ -96,7 +103,7 @@
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/rememberMe"
         android:layout_width="131dp"
-        android:layout_height="37dp"
+        android:layout_height="48dp"
         android:text="@string/rememberMe"
         android:textAlignment="center"
         android:visibility="visible"

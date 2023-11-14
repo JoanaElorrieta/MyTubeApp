@@ -2,7 +2,6 @@ package com.reto1.mytubeapp.data.repository.remote
 
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.repository.CommonSongRepository
-import com.reto1.mytubeapp.utils.Resource
 
 class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
     override suspend fun getSongs() = getResult {

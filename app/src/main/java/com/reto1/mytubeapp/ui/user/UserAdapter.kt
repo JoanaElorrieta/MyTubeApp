@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.reto1.mytubeapp.R
 import com.reto1.mytubeapp.data.User
 
-class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserAdapter.UserDiffCallback()) {
+class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.UserViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.register_activity, parent, false)

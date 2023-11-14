@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb" />
+        app:srcCompat="@drawable/free_youtube_logo_icon_2431_thumb"
+        android:contentDescription="@string/icono_de_la_aplicaci_n" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineSuperior"

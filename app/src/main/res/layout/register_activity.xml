@@ -15,31 +15,34 @@
         app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineSuperior" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineSuperior"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Nombre"
+        android:hint="@string/nombre"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/surname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/surname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Apellido"
+        android:hint="@string/apellido"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/password"
@@ -53,7 +56,8 @@
         app:layout_constraintBottom_toTopOf="@+id/password2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surname" />
+        app:layout_constraintTop_toBottomOf="@+id/surname"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/password2"
@@ -67,7 +71,8 @@
         app:layout_constraintBottom_toTopOf="@+id/guidelineInferior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:autofillHints="" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineSuperior"
@@ -132,7 +137,8 @@
         app:layout_constraintBottom_toTopOf="@+id/guidelineSuperior"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/icono_de_la_aplicaci_n" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical"

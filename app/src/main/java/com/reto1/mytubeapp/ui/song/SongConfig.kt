@@ -1,5 +1,6 @@
 package com.reto1.mytubeapp.ui.song
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ class SongConfig : AppCompatActivity() {
     private val viewModel: SongViewModel by viewModels { SongViewModelFactory(songRepository) }
 
     private lateinit var song: Song
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ConfigSongBinding.inflate(layoutInflater)
@@ -222,7 +224,6 @@ class SongConfig : AppCompatActivity() {
                         false
                     }
                 }
-
                 R.id.back -> {
                     val intent = Intent(this, SongActivity::class.java)
                     intent.putExtra("someChanges", someChanges)
@@ -230,7 +231,6 @@ class SongConfig : AppCompatActivity() {
                     finish()
                     true
                 }
-
                 R.id.logOut -> {
                     if (!MyTube.userPreferences.getRememberMeState()) {
                         MyTube.userPreferences.removeData()

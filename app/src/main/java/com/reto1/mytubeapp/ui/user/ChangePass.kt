@@ -1,6 +1,7 @@
 package com.reto1.mytubeapp.ui.user
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -75,11 +76,21 @@ class ChangePass : AppCompatActivity() {
 
         if (email.isEmpty() || oldPassword.isEmpty()  || password.isEmpty() || password2.isEmpty()) {
             Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
+            binding.email.setHintTextColor(Color.RED)
+            binding.password.setHintTextColor(Color.RED)
+            binding.password2.setHintTextColor(Color.RED)
             return false
         }
         val emailCorrecto = validarEmail(email)
         if (!emailCorrecto) {
             Toast.makeText(this, "El correo tiene un formato erróneo", Toast.LENGTH_LONG).show()
+            binding.email.setTextColor(Color.RED)
+            binding.password.setTextColor(Color.BLACK)
+            binding.password2.setTextColor(Color.BLACK)
+
+            binding.email.setHintTextColor(Color.BLACK)
+            binding.password.setHintTextColor(Color.BLACK)
+            binding.password2.setHintTextColor(Color.BLACK)
             return false
         }
 
@@ -92,10 +103,24 @@ class ChangePass : AppCompatActivity() {
                     "La nueva contraseña debe tener 8 caracteres o más",
                     Toast.LENGTH_LONG
                 ).show()
+                binding.email.setTextColor(Color.BLACK)
+                binding.password.setTextColor(Color.RED)
+                binding.password2.setTextColor(Color.BLACK)
+
+                binding.email.setHintTextColor(Color.BLACK)
+                binding.password.setHintTextColor(Color.BLACK)
+                binding.password2.setHintTextColor(Color.BLACK)
                 return false
             }
         } else {
             Toast.makeText(this, "Las dos contraseñas no coinciden", Toast.LENGTH_LONG).show()
+            binding.email.setTextColor(Color.BLACK)
+            binding.password.setTextColor(Color.RED)
+            binding.password2.setTextColor(Color.RED)
+
+            binding.email.setHintTextColor(Color.BLACK)
+            binding.password.setHintTextColor(Color.BLACK)
+            binding.password2.setHintTextColor(Color.BLACK)
             return false
         }
     }
