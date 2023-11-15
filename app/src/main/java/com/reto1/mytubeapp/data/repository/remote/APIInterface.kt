@@ -30,17 +30,15 @@ interface APIInterface {
     @GET("/songs/{idSong}/play")
     suspend fun selectNumberViews(@Path("idSong") idSong:Int): Response<Integer>
 
-    @GET("/users/{email},{password}")
-    suspend fun getUserByMail(@Path("email") email: String, @Path("password") password: String): Response<User>
     @POST("/users")
     suspend fun createUser(@Body user: User): Response<Void>
     @PUT("/users/update")
     suspend fun updateUser(@Body changePasswordRequest: ChangePasswordRequest): Response<Void>
     @PUT("/songs/{idSong}/play")
     suspend fun updateNumberViews(@Path("idSong") idSong:Int): Response<Void>
-    @POST("/users/{idSong}/favorite")
+    @POST("/users/favorite/{idSong}")
     suspend fun createFavorite(@Path("idSong") idSong:Int): Response<Void>
-    @DELETE("/users/{idSong}/favorite")
+    @DELETE("/users/favorite/{idSong}")
     suspend fun deleteFavorite(@Path("idSong") idSong:Int): Response<Integer>
 
     @POST("/auth/signup")
