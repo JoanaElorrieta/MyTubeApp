@@ -281,8 +281,8 @@ class SongActivity : AppCompatActivity() {
 
         if (userId != null) {
             when (song.favorite) {
-                1 -> viewModel.onDeleteFavorite(userId, song.id)
-                0 -> viewModel.onCreateFavorite(userId, song.id)
+                1 -> viewModel.onDeleteFavorite(song.id)
+                0 -> viewModel.onCreateFavorite(song.id)
             }
         }
     }
@@ -294,11 +294,11 @@ class SongActivity : AppCompatActivity() {
         try {
             val idUser = MyTube.userPreferences.getUser()?.id
             if (idUser != null && song.views > 0) {
-                viewModel.onUpdateViews(idUser, song.id)
+                viewModel.onUpdateViews(song.id)
                 startActivity(intent)
 
             }else if (idUser != null && song.views == 0){
-                viewModel.onInsertViews(idUser, song.id)
+                viewModel.onInsertViews(song.id)
                 startActivity(intent)
 
             }else{

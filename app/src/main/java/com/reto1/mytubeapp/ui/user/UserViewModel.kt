@@ -41,7 +41,7 @@ class UserViewModel(
     }
     private suspend fun searchUser(email:String, password:String) : Resource<User> {
         return withContext(Dispatchers.IO) {
-            val user= AuthRequest(email,password)
+            val user= AuthRequest(email,"12341234",password)
             userRepository.login(user)
         }
     }
@@ -51,25 +51,25 @@ class UserViewModel(
         }
     }
 
-    fun onUpdateUser(email: String, oldPassword: String, password: String) {
+    fun onUpdateUser(authRequest: AuthRequest) {
         viewModelScope.launch {
-            _update.value = updateUser(email, oldPassword, password)
+            _update.value = updateUser(authRequest)
         }
     }
 
-    private suspend fun updateUser(email:String, oldPassword:String, password:String) : Resource<Void> {
+    private suspend fun updateUser(authRequest: AuthRequest) : Resource<Void> {
         return withContext(Dispatchers.IO) {
-            userRepository.updateUser(email, oldPassword, password)
+            userRepository.updateUser(authRequest)
         }
     }
-    fun getUserInfo(accessToken:String){
+    fun getUserInfo(){
         viewModelScope.launch {
-            _user.value = getInfo(accessToken)
+            _user.value = getInfo()
         }
     }
-    private suspend fun getInfo(accessToken:String) : Resource<User> {
+    private suspend fun getInfo() : Resource<User> {
         return withContext(Dispatchers.IO) {
-            userRepository.getUserInfo(accessToken)
+            userRepository.getUserInfo()
         }
     }
 

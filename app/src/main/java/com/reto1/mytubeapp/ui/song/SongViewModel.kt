@@ -53,7 +53,7 @@ class SongViewModel(
         return withContext(Dispatchers.IO) {
             val userId=MyTube.userPreferences.getUser()?.id
             if (userId != null) {
-                songRepository.getSongsFavoriteViews(userId)
+                songRepository.getSongsFavoriteViews()
             }else{
                 songRepository.getSongs()
             }
@@ -91,47 +91,47 @@ class SongViewModel(
             songRepository.deleteSong(id)
         }
     }
-    fun onUpdateViews(idUser: Int, idSong:Int) {
+    fun onUpdateViews(idSong:Int) {
         viewModelScope.launch {
-            _updatedViews.value = updateViews(idUser,idSong)
+            _updatedViews.value = updateViews(idSong)
         }
     }
-    private suspend fun updateViews(idUser: Int, idSong:Int): Resource<Void> {
+    private suspend fun updateViews(idSong:Int): Resource<Void> {
         return withContext(Dispatchers.IO) {
-            songRepository.updateNumberViews(idUser,idSong)
+            songRepository.updateNumberViews(idSong)
         }
     }
 
-    fun onCreateFavorite(idUser: Int, idSong:Int) {
+    fun onCreateFavorite(idSong:Int) {
         viewModelScope.launch {
-            _updatedFavorites.value = createFavorite(idUser,idSong)
+            _updatedFavorites.value = createFavorite(idSong)
         }
     }
-    private suspend fun createFavorite(idUser: Int, idSong:Int): Resource<Void> {
+    private suspend fun createFavorite(idSong:Int): Resource<Void> {
         return withContext(Dispatchers.IO) {
-            songRepository.createFavorite(idUser,idSong)
+            songRepository.createFavorite(idSong)
         }
     }
 
-    fun onDeleteFavorite(idUser: Int, idSong:Int) {
+    fun onDeleteFavorite(idSong:Int) {
         viewModelScope.launch {
-            _deletedFavorites.value = deleteFavorite(idUser,idSong)
+            _deletedFavorites.value = deleteFavorite(idSong)
         }
     }
-    private suspend fun deleteFavorite(idUser: Int, idSong:Int): Resource<Integer> {
+    private suspend fun deleteFavorite(idSong:Int): Resource<Integer> {
         return withContext(Dispatchers.IO) {
-            songRepository.deleteFavorite(idUser,idSong)
+            songRepository.deleteFavorite(idSong)
         }
     }
 
-    fun onInsertViews(idUser: Int, idSong:Int) {
+    fun onInsertViews(idSong:Int) {
         viewModelScope.launch {
-            _insertedViews.value = insertViews(idUser,idSong)
+            _insertedViews.value = insertViews(idSong)
         }
     }
-    private suspend fun insertViews(idUser: Int, idSong:Int): Resource<Void> {
+    private suspend fun insertViews(idSong:Int): Resource<Void> {
         return withContext(Dispatchers.IO) {
-            songRepository.insertNumberViews(idUser,idSong)
+            songRepository.insertNumberViews(idSong)
         }
     }
 }

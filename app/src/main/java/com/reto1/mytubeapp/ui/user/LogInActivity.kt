@@ -26,7 +26,6 @@ import java.util.regex.Pattern
 
 class LogInActivity : AppCompatActivity() {
     private val USER_REQUEST_CODE = 1
-    private val USER_UPDATE_CODE = 2
     private lateinit var userAdapter: UserAdapter
     private val userRepository = RemoteUserDataSource()
     private lateinit var rememberMeCheckBox: AppCompatCheckBox
@@ -44,9 +43,11 @@ class LogInActivity : AppCompatActivity() {
         //Pone el checkbox true o false segun lo guardado
         rememberMeCheckBox.isChecked= MyTube.userPreferences.getRememberMeState()
         //Pone pass y user si hay uno guardado
-        if(MyTube.userPreferences.getUser()!=null){
+        if(rememberMeCheckBox.isChecked){
             findViewById<TextView>(R.id.email).text= MyTube.userPreferences.getUser()!!.email
             findViewById<TextView>(R.id.password).text= MyTube.userPreferences.getPass()
+        }else {
+            MyTube.userPreferences.removeData()
         }
 
 
@@ -57,8 +58,7 @@ class LogInActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.forgot).setOnClickListener {
             val intent = Intent(this, ChangePass::class.java)
-            @Suppress("DEPRECATION")
-            startActivityForResult(intent, USER_UPDATE_CODE)
+            startActivity(intent)
             finish()
         }
         findViewById<Button>(R.id.login).setOnClickListener {
@@ -80,12 +80,12 @@ class LogInActivity : AppCompatActivity() {
                         Log.i("Login", "" + accessToken)
                         if (accessToken != null) {
                             MyTube.userPreferences.saveAuthToken(accessToken)
-                            viewModel.getUserInfo("Bearer $accessToken")
+                            viewModel.getUserInfo()
                         }
                     }
                 }
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, "Los datos introducidos no son correctos", Toast.LENGTH_LONG)
+                    Toast.makeText(this, it.message, Toast.LENGTH_LONG)
                         .show()
                 }
                 Resource.Status.LOADING -> {
@@ -134,12 +134,6 @@ class LogInActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.email).setText(user.email)
                 findViewById<EditText>(R.id.password).setText(user.password)
             }
-        }else if (requestCode == USER_UPDATE_CODE && resultCode == RESULT_OK){
-            val email=data?.getStringExtra("email") ?: ""
-            val password=data?.getStringExtra("password") ?: ""
-            Log.i("ViewModel",""+email)
-            findViewById<EditText>(R.id.email).setText(email)
-            findViewById<EditText>(R.id.password).setText(password)
         }
     }
 

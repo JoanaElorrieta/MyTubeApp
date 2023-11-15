@@ -7,8 +7,8 @@ class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
     override suspend fun getSongs() = getResult {
         RetrofitClient.apiInterface.getSongs()
     }
-    override suspend fun getSongsFavoriteViews(idUser: Int) = getResult {
-        RetrofitClient.apiInterface.getSongsFavoriteViews(idUser)
+    override suspend fun getSongsFavoriteViews() = getResult {
+        RetrofitClient.apiInterface.getSongsFavoriteViews()
     }
 
     override suspend fun createSong(song: Song) = getResult {
@@ -25,20 +25,20 @@ class RemoteSongDataSource : BaseDataSource(), CommonSongRepository {
     override suspend fun getSongById(id: Int) = getResult {
         RetrofitClient.apiInterface.getSongById(id)
     }
-    override suspend fun updateNumberViews(idUser:Int, idSong:Int) = getResult {
-        RetrofitClient.apiInterface.updateNumberViews(idUser, idSong)
+    override suspend fun updateNumberViews(idSong:Int) = getResult {
+        RetrofitClient.apiInterface.updateNumberViews(idSong)
     }
-    override suspend fun createFavorite(idUser: Int, idSong: Int) = getResult {
-        RetrofitClient.apiInterface.createFavorite(idUser, idSong)
+    override suspend fun createFavorite(idSong: Int) = getResult {
+        RetrofitClient.apiInterface.createFavorite(idSong)
     }
 
-    override suspend fun deleteFavorite(idUser: Int, idSong: Int) = getResult {
-        RetrofitClient.apiInterface.deleteFavorite(idUser, idSong)
+    override suspend fun deleteFavorite(idSong: Int) = getResult {
+        RetrofitClient.apiInterface.deleteFavorite(idSong)
     }
-    override suspend fun insertNumberViews(idUser:Int, idSong:Int) = getResult {
-        RetrofitClient.apiInterface.insertNumberViews(idUser, idSong)
+    override suspend fun insertNumberViews(idSong:Int) = getResult {
+        RetrofitClient.apiInterface.insertNumberViews(idSong)
     }
-    override suspend fun selectNumberViews(idUser:Int, idSong:Int) = getResult {
-        RetrofitClient.apiInterface.selectNumberViews(idUser, idSong)
+    override suspend fun selectNumberViews(idSong:Int) = getResult {
+        RetrofitClient.apiInterface.selectNumberViews(idSong)
     }
 }

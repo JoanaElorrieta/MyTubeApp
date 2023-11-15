@@ -6,5 +6,21 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AuthRequest(
     val email: String,
+    val oldPassword: String,
     val password: String
-) : Parcelable
+
+) : Parcelable {
+
+    constructor(
+        email: String,
+        password: String,
+    ) : this(
+        email = email,
+        oldPassword = "",
+        password = password
+    )
+
+}
+
+
+

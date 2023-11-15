@@ -8,8 +8,11 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.reto1.mytubeapp.MyTube
+import com.reto1.mytubeapp.data.AuthRequest
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.databinding.ChangePassBinding
+import com.reto1.mytubeapp.ui.song.SongActivity
 import com.reto1.mytubeapp.utils.Resource
 import java.util.regex.Pattern
 
@@ -29,12 +32,14 @@ class ChangePass : AppCompatActivity() {
                 Resource.Status.SUCCESS -> {
                     Toast.makeText(this, "Contraseña modificada con exito", Toast.LENGTH_LONG)
                         .show()
+                    MyTube.userPreferences.removeData()
+                    val intent = Intent(this, LogInActivity::class.java)
+                    startActivity(intent)
                     finish()
                 }
                 Resource.Status.ERROR -> {
-                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG)
+                    Toast.makeText(this, "No se ha podido actualizar la contraseña", Toast.LENGTH_LONG)
                         .show()
-                    Log.i("Prueba", "" + resource.message)
                 }
                 Resource.Status.LOADING -> {
                 }
@@ -45,16 +50,14 @@ class ChangePass : AppCompatActivity() {
 
             if(checkData()){
                 val email = binding.email.text.toString()
-                val oldPassword = binding.oldPassword.toString()
+                val oldPassword = binding.oldPassword.text.toString()
                 val password = binding.password.text.toString()
 
-                viewModel.onUpdateUser(email,oldPassword,password)
+                viewModel.onUpdateUser(AuthRequest(email,oldPassword,password))
             }
         }
 
         binding.back.setOnClickListener {
-            val intent = Intent(this, LogInActivity::class.java)
-            startActivity(intent)
             finish()
         }
 
@@ -68,7 +71,7 @@ class ChangePass : AppCompatActivity() {
 
     //Este metodo crea un usuario y si la contraseña es igual en ambos campos y el correo tiene
     //Formato correcto lo pasa, si no lo pasa como null
-    private fun checkData(): Boolean{
+    private fun checkData(): Boolean {
         val email = binding.email.text.toString()
         val oldPassword = binding.oldPassword.text.toString()
         val password = binding.password.text.toString()
