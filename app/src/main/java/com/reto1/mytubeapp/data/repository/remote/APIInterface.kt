@@ -1,13 +1,13 @@
 package com.reto1.mytubeapp.data.repository.remote
 
 import com.reto1.mytubeapp.data.AuthRequest
+import com.reto1.mytubeapp.data.ChangePasswordRequest
 import com.reto1.mytubeapp.data.Song
 import com.reto1.mytubeapp.data.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -35,7 +35,7 @@ interface APIInterface {
     @POST("/users")
     suspend fun createUser(@Body user: User): Response<Void>
     @PUT("/users/update")
-    suspend fun updateUser(@Body authRequest: AuthRequest): Response<Void>
+    suspend fun updateUser(@Body changePasswordRequest: ChangePasswordRequest): Response<Void>
     @PUT("/songs/{idSong}/play")
     suspend fun updateNumberViews(@Path("idSong") idSong:Int): Response<Void>
     @POST("/users/{idSong}/favorite")

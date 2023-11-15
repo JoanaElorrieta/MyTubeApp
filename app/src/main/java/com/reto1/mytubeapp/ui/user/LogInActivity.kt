@@ -2,17 +2,13 @@ package com.reto1.mytubeapp.ui.user
 
 import android.annotation.SuppressLint
 import com.reto1.mytubeapp.MyTube
-import com.reto1.mytubeapp.R
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.util.Patterns
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.AppCompatCheckBox
@@ -38,33 +34,33 @@ class LogInActivity : AppCompatActivity() {
         binding = LoginActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         userAdapter = UserAdapter()
-        rememberMeCheckBox= findViewById(R.id.rememberMe)
+        rememberMeCheckBox= binding.rememberMe
         rememberMeCheckBox.buttonTintList = ColorStateList.valueOf(Color.RED)
         //Pone el checkbox true o false segun lo guardado
         rememberMeCheckBox.isChecked= MyTube.userPreferences.getRememberMeState()
         //Pone pass y user si hay uno guardado
         if(rememberMeCheckBox.isChecked){
-            findViewById<TextView>(R.id.email).text= MyTube.userPreferences.getUser()!!.email
-            findViewById<TextView>(R.id.password).text= MyTube.userPreferences.getPass()
+            binding.email.setText(MyTube.userPreferences.getUser()!!.email)
+            binding.password.setText(MyTube.userPreferences.getPass())
         }else {
             MyTube.userPreferences.removeData()
         }
 
 
-        findViewById<Button>(R.id.register).setOnClickListener {
+       binding.register.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             @Suppress("DEPRECATION")
             startActivityForResult(intent, USER_REQUEST_CODE)
         }
-        findViewById<Button>(R.id.forgot).setOnClickListener {
+        binding.forgot.setOnClickListener {
             val intent = Intent(this, ChangePass::class.java)
             startActivity(intent)
             finish()
         }
-        findViewById<Button>(R.id.login).setOnClickListener {
-            var email = findViewById<EditText>(R.id.email).text.toString()
+        binding.login.setOnClickListener {
+            var email = binding.email.text.toString()
             email= lowerCaseEmail(email)
-            val password = findViewById<EditText>(R.id.password).text.toString()
+            val password = binding.password.text.toString()
             if(checkData()){
                 viewModel.onSearchUser(email, password)
             }
@@ -104,7 +100,7 @@ class LogInActivity : AppCompatActivity() {
                         if (user != null && rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(rememberMeCheckBox.isChecked)
-                            MyTube.userPreferences.savePass(findViewById<TextView>(R.id.password).text.toString())
+                            MyTube.userPreferences.savePass(binding.password.text.toString())
                         } else if (user != null && !rememberMeCheckBox.isChecked) {
                             MyTube.userPreferences.saveUser(user)
                             MyTube.userPreferences.saveRememberMeState(false)
@@ -131,15 +127,15 @@ class LogInActivity : AppCompatActivity() {
             val user = data?.getParcelableExtra<User>("user")
             Log.i("Main", "" + user)
             if (user != null) {
-                findViewById<EditText>(R.id.email).setText(user.email)
-                findViewById<EditText>(R.id.password).setText(user.password)
+                binding.email.setText(user.email)
+                binding.password.setText(user.password)
             }
         }
     }
 
     private fun checkData(): Boolean {
-        val email = findViewById<EditText>(R.id.email).text.toString()
-        val password = findViewById<EditText>(R.id.password).text.toString()
+        val email = binding.email.text.toString()
+        val password = binding.password.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Ningún campo puede estar vacío", Toast.LENGTH_LONG).show()
@@ -158,20 +154,17 @@ class LogInActivity : AppCompatActivity() {
             return false
         }
 
-        if (password.length >= 8) {
-            return true
+        return if (password.length >= 8) {
+            true
         } else {
-            Toast.makeText(
-                this,
-                "La contraseña debe tener 8 caracteres o más",
-                Toast.LENGTH_LONG
+            Toast.makeText(this, "La contraseña debe tener 8 caracteres o más", Toast.LENGTH_LONG
             ).show()
             binding.email.setTextColor(Color.BLACK)
             binding.password.setTextColor(Color.RED)
 
             binding.email.setHintTextColor(Color.BLACK)
             binding.password.setHintTextColor(Color.BLACK)
-            return false
+            false
         }
 
     }

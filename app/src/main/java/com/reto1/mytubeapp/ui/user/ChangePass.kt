@@ -3,16 +3,13 @@ package com.reto1.mytubeapp.ui.user
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.reto1.mytubeapp.MyTube
-import com.reto1.mytubeapp.data.AuthRequest
 import com.reto1.mytubeapp.data.repository.remote.RemoteUserDataSource
 import com.reto1.mytubeapp.databinding.ChangePassBinding
-import com.reto1.mytubeapp.ui.song.SongActivity
 import com.reto1.mytubeapp.utils.Resource
 import java.util.regex.Pattern
 
@@ -53,7 +50,7 @@ class ChangePass : AppCompatActivity() {
                 val oldPassword = binding.oldPassword.text.toString()
                 val password = binding.password.text.toString()
 
-                viewModel.onUpdateUser(AuthRequest(email,oldPassword,password))
+                viewModel.onUpdateUser(email,oldPassword,password)
             }
         }
 

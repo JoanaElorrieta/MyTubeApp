@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.reto1.mytubeapp.data.AuthRequest
+import com.reto1.mytubeapp.data.ChangePasswordRequest
 import com.reto1.mytubeapp.data.User
 import com.reto1.mytubeapp.data.repository.CommonUserRepository
 import com.reto1.mytubeapp.utils.Resource
@@ -41,7 +42,7 @@ class UserViewModel(
     }
     private suspend fun searchUser(email:String, password:String) : Resource<User> {
         return withContext(Dispatchers.IO) {
-            val user= AuthRequest(email,"12341234",password)
+            val user = AuthRequest(email, password)
             userRepository.login(user)
         }
     }
@@ -51,15 +52,16 @@ class UserViewModel(
         }
     }
 
-    fun onUpdateUser(authRequest: AuthRequest) {
+    fun onUpdateUser(email: String, oldPassword: String, password: String) {
         viewModelScope.launch {
-            _update.value = updateUser(authRequest)
+            _update.value = updateUser(email, oldPassword, password)
         }
     }
 
-    private suspend fun updateUser(authRequest: AuthRequest) : Resource<Void> {
+    private suspend fun updateUser(email: String, oldPassword: String, password: String) : Resource<Void> {
         return withContext(Dispatchers.IO) {
-            userRepository.updateUser(authRequest)
+            val changePasswordRequest = ChangePasswordRequest(email,oldPassword,password)
+            userRepository.updateUser(changePasswordRequest)
         }
     }
     fun getUserInfo(){

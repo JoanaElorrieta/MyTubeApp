@@ -4,10 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AuthRequest(
+data class ChangePasswordRequest(
     val email: String,
+    val oldPassword: String,
     val password: String
-) : Parcelable
-
-
-
+):Parcelable
