@@ -74,15 +74,12 @@
         android:layout_height="48dp"
         android:backgroundTint="#DD2323"
         android:text="@string/register"
-        android:textColorHighlight="#DD0000"
-        android:textColorLink="#BF360C"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/forgot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/login"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineInferior"
-        app:rippleColor="#B71C1C" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineInferior" />
 
     <Button
         android:id="@+id/login"
@@ -90,15 +87,12 @@
         android:layout_height="48dp"
         android:backgroundTint="#DD2323"
         android:text="@string/login"
-        android:textColorHighlight="#DD0000"
-        android:textColorLink="#BF360C"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/forgot"
         app:layout_constraintEnd_toStartOf="@+id/register"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineInferior"
-        app:rippleColor="#B71C1C" />
+        app:layout_constraintTop_toTopOf="@+id/guidelineInferior" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/rememberMe"
